@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>TripAnchor — Trips</title>
+    <link rel="stylesheet" href="../popup/popup.css" />
+    <style>
+      body {
+        width: auto;
+        max-width: 720px;
+        max-height: none;
+        margin: 24px auto;
+        padding: 0 16px 24px;
+      }
+      h1 {
+        font-size: 20px;
+        margin: 0 0 4px;
+      }
+      .ta-page-sub {
+        color: var(--muted);
+        margin-bottom: 16px;
+      }
+      .ta-card {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 14px 16px;
+        margin-bottom: 14px;
+        background: #fff;
+      }
+      .ta-card h2 {
+        margin: 0 0 10px;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--muted);
+      }
+      .ta-trip-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        margin-bottom: 6px;
+      }
+      .ta-trip-row.ta-active {
+        border-color: var(--accent);
+        background: #f7fbff;
+      }
+      .ta-trip-row .ta-trip-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .ta-trip-row .ta-trip-info strong {
+        display: block;
+      }
+      .ta-trip-row .ta-trip-info span {
+        color: var(--muted);
+        font-size: 11px;
+      }
+      input[type="text"] {
+        font: inherit;
+        padding: 6px 8px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        min-width: 200px;
+      }
+      .ta-bar {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      pre {
+        white-space: pre-wrap;
+        word-break: break-word;
+        background: var(--bg-soft);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 8px;
+        max-height: 200px;
+        overflow: auto;
+        font-size: 11px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>TripAnchor</h1>
+    <p class="ta-page-sub">
+      Manage your trips, back up your data, and restore from a previous export.
+    </p>
+
+    <section class="ta-card">
+      <h2>Trips</h2>
+      <div id="ta-trip-list"></div>
+      <div class="ta-bar" style="margin-top: 10px">
+        <input id="ta-new-trip-name" type="text" placeholder="New trip name" />
+        <button id="ta-new-trip" class="ta-primary">Create trip</button>
+      </div>
+    </section>
+
+    <section class="ta-card">
+      <h2>Backup</h2>
+      <div class="ta-bar">
+        <button id="ta-export-json" class="ta-secondary">
+          Download backup (.json)
+        </button>
+        <label class="ta-secondary" style="cursor: pointer">
+          Restore from backup
+          <input
+            id="ta-import-json"
+            type="file"
+            accept="application/json,.json"
+            style="display: none"
+          />
+        </label>
+        <span id="ta-backup-status" class="ta-status"></span>
+      </div>
+      <p class="ta-hint">
+        Backups include every trip and place stored in this browser profile.
+        Restoring replaces all current data.
+      </p>
+    </section>
+
+    <section class="ta-card">
+      <h2>Storage preview</h2>
+      <pre id="ta-storage-preview">Loading…</pre>
+    </section>
+
+    <script type="module" src="options.js"></script>
+  </body>
+</html>

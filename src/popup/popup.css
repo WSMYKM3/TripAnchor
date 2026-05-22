@@ -1,0 +1,332 @@
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f4f6fb;
+  --border: #e3e7ef;
+  --text: #1b2434;
+  --muted: #6b7689;
+  --accent: #1863af;
+  --accent-hover: #14528c;
+  --danger: #b53b3b;
+  --ok: #28733f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font: 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+body {
+  width: 360px;
+  max-height: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+.ta-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-soft);
+}
+
+.ta-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.ta-trip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+#ta-trip-name {
+  font-weight: 600;
+  color: var(--text);
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ta-section {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ta-section:last-child {
+  border-bottom: none;
+}
+
+.ta-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.ta-section-head h2 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.ta-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.ta-empty {
+  color: var(--muted);
+  font-size: 12px;
+  font-style: italic;
+  padding: 6px 0;
+}
+
+.ta-item {
+  display: flex;
+  gap: 8px;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.ta-item.ta-candidate {
+  cursor: pointer;
+}
+
+.ta-item.ta-candidate:hover {
+  border-color: var(--accent);
+  background: #f7fbff;
+}
+
+.ta-item input[type="checkbox"] {
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.ta-item-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.ta-item-name {
+  font-weight: 600;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ta-item-meta {
+  color: var(--muted);
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ta-item-tags {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.ta-tag {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+.ta-tag.ta-tag-coord {
+  color: var(--ok);
+  border-color: #cfe6d6;
+  background: #f0fbf3;
+}
+
+.ta-tag.ta-tag-nocoord {
+  color: #8a6306;
+  border-color: #eadcb1;
+  background: #fffaee;
+}
+
+.ta-tag.ta-tag-bad {
+  color: var(--danger);
+  border-color: #f0c8c8;
+  background: #fef0f0;
+}
+
+.ta-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.ta-icon-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 2px 4px;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.ta-icon-btn:hover {
+  color: var(--danger);
+}
+
+.ta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.ta-primary,
+.ta-secondary {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.ta-primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.ta-primary:hover {
+  background: var(--accent-hover);
+}
+
+.ta-primary:disabled,
+.ta-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ta-secondary {
+  background: #fff;
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.ta-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.ta-link {
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0;
+  text-decoration: none;
+}
+
+.ta-link:hover {
+  text-decoration: underline;
+}
+
+a.ta-link {
+  display: inline-block;
+}
+
+.ta-status {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.ta-status.ta-status-ok {
+  color: var(--ok);
+}
+
+.ta-status.ta-status-warn {
+  color: #8a6306;
+}
+
+.ta-hint {
+  color: var(--muted);
+  font-size: 11px;
+  margin: 6px 0 0;
+}
+
+.ta-source-link {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 11px;
+}
+
+.ta-source-link:hover {
+  color: var(--accent);
+}
+
+.ta-primary-lg {
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 13px;
+}
+
+.ta-more-export {
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.ta-more-export > summary {
+  cursor: pointer;
+  color: var(--muted);
+  padding: 4px 0;
+  list-style: none;
+}
+
+.ta-more-export > summary::-webkit-details-marker {
+  display: none;
+}
+
+.ta-more-export > summary::before {
+  content: "▸ ";
+  display: inline-block;
+  transition: transform 0.15s;
+}
+
+.ta-more-export[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.ta-more-export[open] > summary {
+  color: var(--text);
+}
+

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>TripAnchor</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="ta-header">
+      <div class="ta-brand">
+        <img src="../../icons/icon48.png" alt="" width="20" height="20" />
+        <span>TripAnchor</span>
+      </div>
+      <div class="ta-trip">
+        <span id="ta-trip-name">My Trip</span>
+        <button id="ta-manage-trips" class="ta-link" title="Manage trips">
+          Manage
+        </button>
+      </div>
+    </header>
+
+    <section class="ta-section">
+      <div class="ta-section-head">
+        <h2>From this page</h2>
+        <button id="ta-rescan" class="ta-link" title="Re-scan the active tab">
+          Rescan
+        </button>
+      </div>
+      <div id="ta-candidates" class="ta-list">
+        <div class="ta-empty">Scanning current tab…</div>
+      </div>
+      <div class="ta-row" id="ta-candidate-actions" hidden>
+        <button id="ta-add-selected" class="ta-primary">Add selected</button>
+        <span id="ta-add-status" class="ta-status"></span>
+      </div>
+    </section>
+
+    <section class="ta-section">
+      <div class="ta-section-head">
+        <h2>Saved (<span id="ta-saved-count">0</span>)</h2>
+        <button id="ta-clear" class="ta-link" title="Clear this trip">
+          Clear
+        </button>
+      </div>
+      <div id="ta-saved" class="ta-list">
+        <div class="ta-empty">No places yet.</div>
+      </div>
+    </section>
+
+    <section class="ta-section ta-export">
+      <div class="ta-section-head">
+        <h2>Export to Google My Maps</h2>
+      </div>
+      <button id="ta-see-trip" class="ta-primary ta-primary-lg" type="button">
+        See my trip
+      </button>
+      <p class="ta-hint" id="ta-see-trip-hint">
+        Downloads your places and opens Google My Maps in a new tab — drop the file onto an untitled layer to see every place at once.
+      </p>
+      <details class="ta-more-export">
+        <summary>Download manually</summary>
+        <div class="ta-row">
+          <button id="ta-export-csv" class="ta-secondary" title="Import into Google My Maps to geocode unresolved addresses">
+            Export CSV
+          </button>
+          <button id="ta-export-kml" class="ta-secondary" title="Use when every place has coordinates">
+            Export KML
+          </button>
+        </div>
+        <p class="ta-hint" id="ta-export-hint">
+          For when you want the raw file. CSV lets My Maps geocode unresolved addresses; KML preserves exact coordinates.
+        </p>
+      </details>
+    </section>
+
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>
