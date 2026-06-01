@@ -331,11 +331,22 @@ function exportKml() {
   );
 }
 
-function onSeeTripClick() {
+async function onSeeTripClick() {
   if (!currentTrip || !currentTrip.places.length) return;
   const counts = countExportable(currentTrip);
   if (counts.total === 0) return;
-  chrome.tabs.create({ url: "https://www.google.com/maps/d/u/0/" });
+  els.seeTrip.disabled = true;
+  try {
+    const response = await chrome.runtime.sendMessage({
+      type: "TA_START_MY_MAPS_IMPORT",
+    });
+    if (!response?.ok) {
+      throw new Error(response?.error || "Could not start My Maps import.");
+    }
+  } catch (err) {
+    alert(`TripAnchor could not open your trip: ${err.message || err}`);
+    els.seeTrip.disabled = false;
+  }
 }
 
 async function onDeleteClick(e) {

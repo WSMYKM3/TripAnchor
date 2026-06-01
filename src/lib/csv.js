@@ -43,3 +43,38 @@ export function tripToCsv(trip) {
   }
   return rows.join("\r\n") + "\r\n";
 }
+
+export function tripToMyMapsAutoImportCsv(trip) {
+  const rows = [["Name", "Location", "Category", "Notes", "SourceURL"]];
+  let skippedCount = 0;
+
+  for (const place of trip.places || []) {
+    const hasCoords =
+      place.lat != null &&
+      place.lng != null &&
+      place.lat !== "" &&
+      place.lng !== "" &&
+      Number.isFinite(Number(place.lat)) &&
+      Number.isFinite(Number(place.lng));
+    const address =
+      typeof place.address === "string" ? place.address.trim() : "";
+    if (!hasCoords && !address) {
+      skippedCount += 1;
+      continue;
+    }
+
+    rows.push([
+      place.name || "",
+      hasCoords ? `${Number(place.lat)},${Number(place.lng)}` : address,
+      place.category || "",
+      place.notes || "",
+      place.sourceUrl || "",
+    ]);
+  }
+
+  return {
+    csv: rows.map((row) => row.map(escapeField).join(",")).join("\r\n") + "\r\n",
+    importedCount: rows.length - 1,
+    skippedCount,
+  };
+}

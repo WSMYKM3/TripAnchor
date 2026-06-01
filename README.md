@@ -37,15 +37,17 @@ You can manage multiple trips, rename them, switch between them, and back up eve
 
 Click **See my trip** in the popup. TripAnchor will:
 
-1. Pick the best format for your trip (KML if every place has coordinates, CSV otherwise so My Maps can geocode the missing ones) and download it.
-2. Open <https://mymaps.google.com/> in a new tab.
+1. Open <https://mymaps.google.com/> in a new tab.
+2. Create a fresh map.
+3. Import your mappable saved places from an in-memory CSV.
+4. Select the location and marker-title columns and leave you on the populated map.
 
-In the My Maps tab:
+If Google asks you to sign in, finish signing in and TripAnchor will resume when
+you return to My Maps. If Google's interface has changed or is not in English,
+the TripAnchor panel tells you to download and import a CSV/KML file manually.
 
-1. Click **Create a new map**.
-2. In the legend on the left, click **Import** under the first untitled layer.
-3. Drop in the file you just downloaded. For CSV, pick the `Address` column as the locator and `Name` as the title; KML imports with no configuration.
-4. Optional: rename the layer, change pin colours, draw routes, or share the map with a link.
+Saved items without coordinates or an address cannot appear on a map. TripAnchor
+skips them during automatic import and reports how many were skipped.
 
 If you'd rather grab the file without opening My Maps, open **Download manually** in the popup and use **Export CSV** / **Export KML** directly.
 
@@ -65,7 +67,8 @@ TripAnchor/
 │   ├── popup/                        # toolbar popup UI (HTML/CSS/JS)
 │   ├── content/
 │   │   ├── extract.js                # scans the active tab for place candidates
-│   │   └── maps-overlay.js           # confirm-via-Maps banner for manual picks
+│   │   ├── maps-overlay.js           # confirm-via-Maps banner for manual picks
+│   │   └── mymaps-import.js           # best-effort one-click My Maps importer
 │   ├── background/                   # MV3 service worker (context menus, resolve flow)
 │   ├── options/                      # multi-trip management & backup page
 │   └── lib/                          # storage, extractors, KML, CSV helpers
@@ -106,13 +109,14 @@ Stored under `chrome.storage.local["tripanchor.v1"]`:
 
 ## Privacy
 
-- All trip data is stored in `chrome.storage.local` on your machine. Nothing is sent anywhere.
-- The extension only reads the active tab when you click the icon or use the right-click menu — there are no persistent content scripts.
+- Trip data is stored in `chrome.storage.local` on your machine. When you click **See my trip**, TripAnchor uploads a generated CSV of the mappable saved places into the opened Google My Maps tab.
+- The extension only scans the active tab when you click the icon or use the right-click menu. During **See my trip**, it temporarily injects the My Maps importer into the opened Google My Maps tab. There are no persistent content scripts.
 - Backups (JSON files) you create are entirely under your control.
 
 ## Limitations
 
 - Google does not provide a public API to write into your Google Maps Saved Lists, so TripAnchor exports to Google **My Maps** (a separate, importable map product). It's a one-time file import per trip rather than a live sync.
+- The one-click My Maps import automates Google's English web interface. Google can change that interface without notice, so TripAnchor falls back to a manual CSV download when it cannot continue reliably.
 - Heavy JS-rendered pages might not expose JSON-LD until after load; if so, scroll/wait a beat and click **Rescan** in the popup.
 - `chrome.storage.local` is per-browser-profile and is not synced across devices. Use **Download backup** in the options page if you want to move data.
 
