@@ -19,7 +19,6 @@ const els = {
   saved: $("#ta-saved"),
   savedCount: $("#ta-saved-count"),
   seeTrip: $("#ta-see-trip"),
-  seeTripHint: $("#ta-see-trip-hint"),
   exportCsv: $("#ta-export-csv"),
   exportKml: $("#ta-export-kml"),
   exportHint: $("#ta-export-hint"),
@@ -49,7 +48,7 @@ function renderCandidates() {
   els.candidates.innerHTML = "";
   if (!currentCandidates.length) {
     els.candidates.innerHTML =
-      '<div class="ta-empty">No places auto-detected on this page. Try selecting an address and right-clicking → "Add selection to TripAnchor".</div>';
+      '<div class="ta-empty">No places auto-detected on this page</div>';
     els.candidateActions.hidden = true;
     return;
   }
@@ -133,8 +132,6 @@ function updateExportHint() {
     els.exportKml.disabled = true;
     els.exportHint.textContent = "Add some places to enable export.";
     els.seeTrip.disabled = true;
-    els.seeTripHint.textContent =
-      "Add some places first, then see them on one map.";
     return;
   }
   els.exportCsv.disabled = false;
@@ -142,10 +139,8 @@ function updateExportHint() {
   els.seeTrip.disabled = false;
   if (counts.withoutCoords > 0) {
     els.exportHint.textContent = `${counts.withoutCoords} of ${counts.total} place(s) lack coordinates. CSV lets My Maps geocode them.`;
-    els.seeTripHint.textContent = `Downloads a CSV of ${counts.total} place(s) and opens Google My Maps. ${counts.withoutCoords} place(s) without coordinates will be geocoded from their address on import.`;
   } else {
     els.exportHint.textContent = `All ${counts.total} place(s) have coordinates. Either format works; KML preserves exact pins.`;
-    els.seeTripHint.textContent = `Downloads a KML of all ${counts.total} place(s) and opens Google My Maps so you can drop them in.`;
   }
 }
 
@@ -340,11 +335,6 @@ function onSeeTripClick() {
   if (!currentTrip || !currentTrip.places.length) return;
   const counts = countExportable(currentTrip);
   if (counts.total === 0) return;
-  if (counts.withoutCoords > 0 || counts.withCoords === 0) {
-    exportCsv();
-  } else {
-    exportKml();
-  }
   chrome.tabs.create({ url: "https://www.google.com/maps/d/u/0/" });
 }
 
