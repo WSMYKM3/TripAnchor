@@ -30,45 +30,149 @@ function fmtDate(ts) {
   }
 }
 
-function escapeHtml(s) {
-  return String(s ?? "").replace(/[&<>"']/g, (c) =>
-    c === "&"
-      ? "&amp;"
-      : c === "<"
-        ? "&lt;"
-        : c === ">"
-          ? "&gt;"
-          : c === '"'
-            ? "&quot;"
-            : "&#39;",
-  );
+function el(tag, props = {}, children = []) {
+  const node = document.createElement(tag);
+  for (const [k, v] of Object.entries(props)) {
+    if (v == null || v === false) continue;
+    if (k === "className") node.className = v;
+    else if (k === "text") node.textContent = v;
+    else if (k === "dataset") Object.assign(node.dataset, v);
+    else if (k.startsWith("on") && typeof v === "function") {
+      node.addEventListener(k.slice(2).toLowerCase(), v);
+    } else if (k in node && typeof node[k] !== "object") {
+      node[k] = v;
+    } else {
+      node.setAttribute(k, v);
+    }
+  }
+  for (const child of children) {
+    if (child == null || child === false) continue;
+    node.append(child);
+  }
+  return node;
+}
+
+function clearChildren(node) {
+  while (node.firstChild) node.removeChild(node.firstChild);
 }
 
 async function refresh() {
   const state = await getState();
   const trips = await listTrips();
-  els.tripList.innerHTML = "";
+  clearChildren(els.tripList);
   for (const trip of trips) {
-    const row = document.createElement("div");
-    row.className =
-      "ta-trip-row" + (trip.id === state.activeTripId ? " ta-active" : "");
-    row.innerHTML = `
-      <div class="ta-trip-info">
-        <strong></strong>
-        <span>${trip.places.length} place(s) · updated ${escapeHtml(fmtDate(trip.updatedAt))}</span>
-      </div>
-      <button class="ta-link" data-act="rename" data-id="${escapeHtml(trip.id)}">Rename</button>
-      ${
-        trip.id === state.activeTripId
-          ? '<span class="ta-tag">active</span>'
-          : `<button class="ta-link" data-act="switch" data-id="${escapeHtml(trip.id)}">Activate</button>`
-      }
-      <button class="ta-link" data-act="delete" data-id="${escapeHtml(trip.id)}" style="color: var(--danger)">Delete</button>
-    `;
-    row.querySelector("strong").textContent = trip.name;
-    els.tripList.appendChild(row);
+    const isActive = trip.id === state.activeTripId;
+    const info = el("div", { className: "ta-trip-info" }, [
+      el("strong", { text: trip.name }),
+      el("span", {
+        text: `${trip.places.length} place(s) · updated ${fmtDate(trip.updatedAt)}`,
+      }),
+    ]);
+    const actions = [
+      el("button", {
+        className: "ta-link",
+        type: "button",
+        text: "Rename",
+        dataset: { act: "rename", id: trip.id },
+      }),
+      isActive
+        ? el("span", { className: "ta-tag ta-tag-plain", text: "active" })
+        : el("button", {
+            className: "ta-link",
+            type: "button",
+            text: "Activate",
+            dataset: { act: "switch", id: trip.id },
+          }),
+      el("button", {
+        className: "ta-link ta-link-danger",
+        type: "button",
+        text: "Delete",
+        dataset: { act: "delete", id: trip.id },
+      }),
+    ];
+    const row = el(
+      "div",
+      { className: `ta-trip-row${isActive ? " ta-active" : ""}` },
+      [info, ...actions],
+    );
+    els.tripList.append(row);
   }
   els.preview.textContent = JSON.stringify(state, null, 2);
+}
+
+function inlineConfirm(rowEl, { message, confirmLabel, danger = false }) {
+  return new Promise((resolve) => {
+    const existing = rowEl.querySelector(".ta-inline-confirm");
+    if (existing) existing.remove();
+    const box = el(
+      "div",
+      { className: "ta-inline-confirm", role: "alertdialog" },
+      [
+        el("span", { className: "ta-inline-msg", text: message }),
+        el("button", {
+          className: "ta-link",
+          type: "button",
+          text: "Cancel",
+          onclick: () => done(false),
+        }),
+        el("button", {
+          className: danger ? "ta-primary ta-primary-danger" : "ta-primary",
+          type: "button",
+          text: confirmLabel,
+          onclick: () => done(true),
+        }),
+      ],
+    );
+    function done(answer) {
+      box.remove();
+      resolve(answer);
+    }
+    rowEl.append(box);
+    box.querySelector(".ta-primary")?.focus();
+  });
+}
+
+function inlineRename(rowEl, currentName) {
+  return new Promise((resolve) => {
+    const existing = rowEl.querySelector(".ta-inline-confirm");
+    if (existing) existing.remove();
+    const input = el("input", {
+      type: "text",
+      value: currentName,
+      className: "ta-inline-input",
+      "aria-label": "New trip name",
+    });
+    const box = el(
+      "div",
+      { className: "ta-inline-confirm", role: "dialog" },
+      [
+        input,
+        el("button", {
+          className: "ta-link",
+          type: "button",
+          text: "Cancel",
+          onclick: () => done(null),
+        }),
+        el("button", {
+          className: "ta-primary",
+          type: "button",
+          text: "Save",
+          onclick: () => done(input.value.trim()),
+        }),
+      ],
+    );
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") done(input.value.trim());
+      else if (e.key === "Escape") done(null);
+    });
+    function done(answer) {
+      box.remove();
+      resolve(answer || null);
+    }
+    rowEl.append(box);
+    input.focus();
+    input.select();
+  });
 }
 
 async function onTripListClick(e) {
@@ -76,27 +180,30 @@ async function onTripListClick(e) {
   if (!btn) return;
   const id = btn.dataset.id;
   const act = btn.dataset.act;
+  const row = btn.closest(".ta-trip-row");
   try {
     if (act === "switch") {
       await switchTrip(id);
     } else if (act === "rename") {
-      const next = prompt("Rename trip to:", btn.closest(".ta-trip-row").querySelector("strong").textContent);
-      if (next && next.trim()) await renameTrip(id, next.trim());
+      const currentName = row?.querySelector("strong")?.textContent || "";
+      const next = await inlineRename(row, currentName);
+      if (!next || next === currentName) return;
+      await renameTrip(id, next);
     } else if (act === "delete") {
       const trips = await listTrips();
       const trip = trips.find((t) => t.id === id);
       if (!trip) return;
-      if (
-        !confirm(
-          `Delete trip "${trip.name}" with ${trip.places.length} place(s)? This cannot be undone.`,
-        )
-      )
-        return;
+      const ok = await inlineConfirm(row, {
+        message: `Delete "${trip.name}" with ${trip.places.length} place(s)?`,
+        confirmLabel: "Delete",
+        danger: true,
+      });
+      if (!ok) return;
       await deleteTrip(id);
     }
     await refresh();
   } catch (err) {
-    alert(`Error: ${err.message || err}`);
+    flashStatus(`Error: ${err.message || err}`, "warn");
   }
 }
 
@@ -111,14 +218,16 @@ async function onCreateTrip() {
   await refresh();
 }
 
+let statusToken = 0;
 function flashStatus(msg, kind = "") {
+  statusToken += 1;
+  const token = statusToken;
   els.backupStatus.textContent = msg;
   els.backupStatus.className = `ta-status${kind ? " ta-status-" + kind : ""}`;
   setTimeout(() => {
-    if (els.backupStatus.textContent === msg) {
-      els.backupStatus.textContent = "";
-      els.backupStatus.className = "ta-status";
-    }
+    if (statusToken !== token) return;
+    els.backupStatus.textContent = "";
+    els.backupStatus.className = "ta-status";
   }, 4000);
 }
 
@@ -130,10 +239,21 @@ async function onExportJson() {
   const url = URL.createObjectURL(blob);
   const stamp = new Date().toISOString().replace(/[:.]/g, "-");
   const filename = `TripAnchor-backup-${stamp}.json`;
-  chrome.downloads.download({ url, filename, saveAs: true }, () => {
+  chrome.downloads.download({ url, filename, saveAs: true }, (downloadId) => {
     setTimeout(() => URL.revokeObjectURL(url), 60_000);
+    if (chrome.runtime.lastError) {
+      flashStatus(
+        `Download failed: ${chrome.runtime.lastError.message || "unknown"}`,
+        "warn",
+      );
+      return;
+    }
+    if (downloadId == null) {
+      flashStatus("Download cancelled.", "warn");
+      return;
+    }
+    flashStatus("Backup downloaded.", "ok");
   });
-  flashStatus("Backup downloaded.", "ok");
 }
 
 async function onImportJson(e) {
@@ -142,12 +262,14 @@ async function onImportJson(e) {
   try {
     const text = await file.text();
     const backup = JSON.parse(text);
+    // We can't easily inline-confirm against the file picker, so keep the
+    // safety prompt here — but it's the one remaining native dialog in the
+    // options surface and it's gating destructive replace-all.
     if (
       !confirm(
         "Importing will REPLACE all current trips and places with the backup. Continue?",
       )
     ) {
-      e.target.value = "";
       return;
     }
     await importBackup(backup);

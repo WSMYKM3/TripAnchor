@@ -88,31 +88,33 @@
     style.textContent = `
       :host { all: initial; }
       .ta-banner {
-        font: 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        color: #1b2434;
+        font: 13px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        color: #2a241d;
         background: #ffffff;
-        border: 1px solid #c9d2e3;
-        border-radius: 10px;
-        box-shadow: 0 6px 20px rgba(20, 40, 80, 0.18);
-        padding: 12px 14px;
+        border: 1px solid #e8dfce;
+        border-radius: 12px;
+        box-shadow: 0 8px 28px rgba(42, 36, 29, 0.18);
+        padding: 14px 16px;
         min-width: 340px;
         max-width: 520px;
       }
       .ta-title {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
         font-weight: 700;
-        color: #1863af;
-        margin-bottom: 4px;
+        color: #c76847;
+        margin-bottom: 6px;
         font-size: 13px;
+        letter-spacing: -0.01em;
       }
       .ta-title .ta-tag {
-        background: #eaf2fb;
-        color: #1863af;
-        padding: 1px 6px;
-        border-radius: 4px;
+        background: #fbede6;
+        color: #c76847;
+        padding: 2px 9px;
+        border-radius: 999px;
         font-size: 10px;
+        font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.04em;
       }
@@ -121,10 +123,10 @@
       }
       .ta-query {
         font-weight: 600;
-        color: #1b2434;
+        color: #2a241d;
       }
       .ta-source {
-        color: #6b7689;
+        color: #7a6f5f;
         font-size: 11px;
         margin: 4px 0 8px;
         overflow: hidden;
@@ -134,75 +136,83 @@
       .ta-status {
         font-size: 12px;
         margin: 8px 0;
-        color: #6b7689;
+        color: #7a6f5f;
       }
       .ta-status.ta-ready {
-        color: #28733f;
+        color: #6b8e5a;
         font-weight: 600;
       }
       .ta-status.ta-error {
-        color: #b53b3b;
+        color: #b23d2e;
       }
       .ta-actions {
         display: flex;
-        gap: 6px;
+        gap: 8px;
         justify-content: flex-end;
-        margin-top: 6px;
+        margin-top: 8px;
       }
       button {
         font: inherit;
-        padding: 6px 12px;
-        border-radius: 6px;
+        padding: 7px 14px;
+        border-radius: 8px;
         border: 1px solid transparent;
         cursor: pointer;
         font-weight: 600;
+        transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
+      }
+      button:focus-visible {
+        outline: 2px solid rgba(199, 104, 71, 0.45);
+        outline-offset: 2px;
       }
       button:disabled {
         opacity: 0.5;
         cursor: not-allowed;
       }
       .ta-save {
-        background: #1863af;
+        background: #c76847;
         color: #ffffff;
+        box-shadow: 0 1px 2px rgba(184, 86, 59, 0.22), inset 0 1px 0 rgba(255,255,255,0.18);
       }
       .ta-save:hover:not(:disabled) {
-        background: #14528c;
+        background: #a8533a;
       }
       .ta-cancel {
         background: #ffffff;
-        border-color: #c9d2e3;
-        color: #1b2434;
+        border-color: #e8dfce;
+        color: #2a241d;
       }
       .ta-cancel:hover {
-        border-color: #1863af;
-        color: #1863af;
+        border-color: #c76847;
+        color: #c76847;
       }
       .ta-close {
         background: none;
         border: none;
-        color: #6b7689;
+        color: #7a6f5f;
         cursor: pointer;
         font-size: 16px;
         padding: 0 4px;
         margin-left: auto;
+        border-radius: 4px;
       }
       .ta-close:hover {
-        color: #1b2434;
+        color: #2a241d;
       }
       .ta-toast {
         margin-top: 8px;
-        padding: 6px 8px;
-        background: #f0fbf3;
-        border: 1px solid #cfe6d6;
-        color: #28733f;
-        border-radius: 6px;
+        padding: 8px 10px;
+        background: #eef3e5;
+        border: 1px solid #cfe0c1;
+        color: #6b8e5a;
+        border-radius: 8px;
         font-size: 12px;
+        font-weight: 500;
         display: none;
       }
       .ta-toast.ta-toast-error {
-        background: #fef0f0;
-        border-color: #f0c8c8;
-        color: #b53b3b;
+        background: #f8e2dc;
+        border-color: #e9c2b8;
+        color: #b23d2e;
       }
     `;
     shadow.appendChild(style);

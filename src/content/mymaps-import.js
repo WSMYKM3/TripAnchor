@@ -27,6 +27,7 @@
     complete: false,
     pumping: false,
     clickedElements: new WeakSet(),
+    lastReadyStep: "(none)",
   };
 
   let observer = null;
@@ -130,50 +131,160 @@
     const style = document.createElement("style");
     style.textContent = `
       .box {
-        width: 292px;
-        padding: 14px;
-        border: 1px solid #d9e2ef;
-        border-radius: 10px;
-        background: #fff;
-        box-shadow: 0 6px 22px rgba(20, 38, 66, .2);
-        color: #1b2434;
-        font: 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        position: relative;
+        width: 300px;
+        padding: 16px 16px 14px;
+        border: 1px solid #e8dfce;
+        border-radius: 12px;
+        background: #ffffff;
+        box-shadow: 0 8px 28px rgba(42, 36, 29, .2);
+        color: #2a241d;
+        font: 13px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       }
-      .title { color: #1863af; font-weight: 700; margin-bottom: 5px; }
-      .message { color: #4f5d73; }
+      .title {
+        color: #c76847;
+        font-weight: 700;
+        margin-bottom: 6px;
+        letter-spacing: -0.01em;
+        padding-right: 22px;
+      }
+      .close {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        border: none;
+        background: transparent;
+        color: #a39787;
+        cursor: pointer;
+        font: inherit;
+        font-size: 18px;
+        line-height: 1;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 120ms ease, color 120ms ease;
+      }
+      .close:hover { background: #f4ecdf; color: #2a241d; }
+      .message { color: #4a4036; }
+      .diag { color: #a39787; font-size: 11px; margin-top: 6px; }
+      .manual-row {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px dashed #e8dfce;
+        font-size: 12px;
+        color: #7a6f5f;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .manual-link {
+        background: none;
+        border: none;
+        padding: 0;
+        color: #c76847;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+      .manual-link:hover { color: #a8533a; }
       .actions { display: none; gap: 8px; margin-top: 12px; }
       button {
-        border: 1px solid #d9e2ef;
-        border-radius: 6px;
-        background: #fff;
-        color: #1b2434;
+        border: 1px solid #e8dfce;
+        border-radius: 8px;
+        background: #ffffff;
+        color: #2a241d;
         cursor: pointer;
         font: inherit;
         font-weight: 600;
-        padding: 6px 9px;
+        padding: 7px 12px;
+        transition: border-color 140ms ease, color 140ms ease;
+      }
+      .actions button:hover {
+        border-color: #c76847;
+        color: #c76847;
+      }
+      button:focus-visible {
+        outline: 2px solid rgba(199, 104, 71, 0.45);
+        outline-offset: 2px;
       }
     `;
     const box = document.createElement("div");
     box.className = "box";
-    box.innerHTML = `
-      <div class="title">TripAnchor</div>
-      <div class="message">Preparing your trip...</div>
-      <div class="actions">
-        <button type="button" data-action="download">Download CSV</button>
-      </div>
-    `;
+    const close = document.createElement("button");
+    close.type = "button";
+    close.className = "close";
+    close.setAttribute("aria-label", "Dismiss TripAnchor");
+    close.title = "Dismiss";
+    close.textContent = "×";
+    const title = document.createElement("div");
+    title.className = "title";
+    title.textContent = "TripAnchor";
+    const message = document.createElement("div");
+    message.className = "message";
+    message.textContent = "Preparing your trip...";
+    const diag = document.createElement("div");
+    diag.className = "diag";
+    const manualRow = document.createElement("div");
+    manualRow.className = "manual-row";
+    const manualHint = document.createElement("span");
+    manualHint.textContent = "Auto-import slow?";
+    const manualLink = document.createElement("button");
+    manualLink.type = "button";
+    manualLink.className = "manual-link";
+    manualLink.textContent = "Download CSV manually";
+    manualRow.append(manualHint, manualLink);
+    const actions = document.createElement("div");
+    actions.className = "actions";
+    const dl = document.createElement("button");
+    dl.type = "button";
+    dl.dataset.action = "download";
+    dl.textContent = "Download CSV";
+    actions.append(dl);
+    box.append(close, title, message, diag, manualRow, actions);
     root.append(style, box);
-    root
-      .querySelector('[data-action="download"]')
-      .addEventListener("click", downloadCsv);
+    dl.addEventListener("click", downloadCsv);
+    manualLink.addEventListener("click", downloadCsv);
+    close.addEventListener("click", dismiss);
     return root;
   }
 
-  function setPanel(message, { actions = false } = {}) {
+  function setPanel(message, { actions = false, diagnostic = null } = {}) {
     const root = panel();
     if (!root) return;
     root.querySelector(".message").textContent = message;
     root.querySelector(".actions").style.display = actions ? "flex" : "none";
+    // When the prominent failure-state Download button is shown, the always-on
+    // "Auto-import slow?" row would be redundant — hide it.
+    root.querySelector(".manual-row").style.display = actions ? "none" : "flex";
+    const diag = root.querySelector(".diag");
+    diag.textContent = diagnostic || "";
+  }
+
+  function removePanel() {
+    const host = document.getElementById("tripanchor-mymaps-status");
+    if (host) host.remove();
+  }
+
+  async function dismiss() {
+    if (state.complete) {
+      removePanel();
+      return;
+    }
+    state.stopped = true;
+    observer?.disconnect();
+    clearTimeout(timer);
+    clearInterval(heartbeat);
+    // Clear the pending entry in the service worker so a future tab update
+    // doesn't re-inject the panel.
+    await sendMessage({ type: "TA_COMPLETE_MY_MAPS_IMPORT" }).catch(() => {});
+    removePanel();
   }
 
   function skippedMessage() {
@@ -289,15 +400,20 @@
     );
   }
 
-  async function fail(error) {
+  async function fail(error, { diagnostic } = {}) {
     if (state.complete || state.stopped) return;
     state.stopped = true;
     const message = String(error || "My Maps automation stopped.");
+    const diagText = diagnostic || `Last completed step: ${state.lastReadyStep}`;
+    console.warn(`TripAnchor My Maps import failed: ${message} (${diagText})`);
     await sendMessage({
       type: "TA_FAIL_MY_MAPS_IMPORT",
-      error: message,
+      error: `${message} (${diagText})`,
     }).catch(() => {});
-    setPanel("Download and import CSV/KML file", { actions: true });
+    setPanel("Download and import CSV/KML file", {
+      actions: true,
+      diagnostic: diagText,
+    });
   }
 
   function downloadCsv() {
@@ -315,6 +431,125 @@
     setTimeout(() => URL.revokeObjectURL(url), 30_000);
   }
 
+  // Each step's `ready()` returns truthy when the matching DOM is visible AND
+  // the action hasn't already been taken. `act()` performs the click/upload
+  // and returns true when work was done this tick. Order matters: earlier
+  // steps short-circuit, mirroring the original pump() flow.
+  const STEPS = [
+    {
+      id: "create-map",
+      ready: () => !state.createStarted && !state.uploadedAt,
+      act: () => {
+        const btn = findAction([
+          "Create a new map",
+          "Create a map",
+          "Create map",
+        ]);
+        if (clickOnce(btn, "Creating a fresh map...")) {
+          state.createStarted = true;
+          return true;
+        }
+        return false;
+      },
+    },
+    {
+      id: "confirm-create",
+      ready: () => state.createStarted && !state.createConfirmed,
+      act: () => {
+        const btn = findAction(["Create"]);
+        if (clickOnce(btn, "Creating a fresh map...")) {
+          state.createConfirmed = true;
+          return true;
+        }
+        return false;
+      },
+    },
+    {
+      id: "open-import",
+      ready: () => !state.uploadedAt,
+      act: () => {
+        const btn = findAction(["Import", "Import data"]);
+        if (clickOnce(btn, "Opening the My Maps importer...")) {
+          wakeImportFrames();
+          return true;
+        }
+        return false;
+      },
+    },
+    {
+      id: "upload-csv",
+      ready: () => !state.uploadedAt && !!document.querySelector('input[type="file"]'),
+      act: () => uploadCsv(document.querySelector('input[type="file"]')),
+    },
+    {
+      id: "pick-location",
+      ready: () =>
+        state.uploadedAt &&
+        !state.locationChosen &&
+        !state.locationAdvanced &&
+        !!getChoice("Location"),
+      act: () => {
+        state.locationChosen = choose(
+          getChoice("Location"),
+          "Selecting the map location column...",
+        );
+        return state.locationChosen;
+      },
+    },
+    {
+      id: "continue-after-location",
+      ready: () =>
+        state.locationChosen &&
+        !state.locationAdvanced &&
+        !!findAction(["Continue", "Next"]),
+      act: () => {
+        if (
+          clickOnce(
+            findAction(["Continue", "Next"]),
+            "Confirming the map location column...",
+          )
+        ) {
+          state.locationAdvanced = true;
+          return true;
+        }
+        return false;
+      },
+    },
+    {
+      id: "pick-title",
+      ready: () => {
+        // Some flows skip the Continue step and jump straight to the
+        // title/finish screen; recognize that and advance bookkeeping.
+        const name = getChoice("Name");
+        const finishBtn = findAction(["Finish"]);
+        if (name && finishBtn && !state.locationAdvanced) {
+          state.locationAdvanced = true;
+        }
+        return !!(name && finishBtn) && !state.titleChosen;
+      },
+      act: () => {
+        state.titleChosen = choose(
+          getChoice("Name"),
+          "Selecting marker titles...",
+        );
+        return state.titleChosen;
+      },
+    },
+    {
+      id: "click-finish",
+      ready: () => state.titleChosen && !state.finishing,
+      act: () => {
+        const btn = findAction(["Finish"]);
+        if (clickOnce(btn, "Finishing your map...")) {
+          state.finishing = true;
+          state.finishClickedAt = Date.now();
+          return true;
+        }
+        return false;
+      },
+    },
+  ];
+
   async function pump() {
     if (state.pumping || state.stopped || state.complete) return;
     state.pumping = true;
@@ -330,9 +565,16 @@
       }
       const lang = document.documentElement.lang;
       if (lang && !/^en(?:-|$)/i.test(lang)) {
-        await fail("Automatic import currently supports the English My Maps interface.");
+        await fail(
+          "Automatic import currently supports the English My Maps interface.",
+          { diagnostic: `Detected page language: ${lang}` },
+        );
         return;
       }
+
+      // Finishing has its own completion condition (finish button vanishes
+      // and any progressbar clears) — once we've clicked Finish we stop
+      // driving new steps and just wait.
       if (state.finishing) {
         const finishStillVisible = findAction(["Finish"]);
         const progressStillVisible = Array.from(
@@ -348,69 +590,10 @@
         return;
       }
 
-      const fileInput = document.querySelector('input[type="file"]');
-      if (fileInput && uploadCsv(fileInput)) return;
-
-      const locationChoice = getChoice("Location");
-      if (locationChoice && !state.locationChosen && !state.locationAdvanced) {
-        state.locationChosen = choose(
-          locationChoice,
-          "Selecting the map location column...",
-        );
-        return;
-      }
-      if (state.locationChosen && !state.locationAdvanced) {
-        const continueButton = findAction(["Continue", "Next"]);
-        if (
-          clickOnce(continueButton, "Confirming the map location column...")
-        ) {
-          state.locationAdvanced = true;
-          return;
-        }
-      }
-
-      const nameChoice = getChoice("Name");
-      const finishButton = findAction(["Finish"]);
-      if (nameChoice && finishButton && !state.locationAdvanced) {
-        state.locationAdvanced = true;
-      }
-      if (nameChoice && finishButton && !state.titleChosen) {
-        state.titleChosen = choose(nameChoice, "Selecting marker titles...");
-        return;
-      }
-      if (state.titleChosen) {
-        if (clickOnce(finishButton, "Finishing your map...")) {
-          state.finishing = true;
-          state.finishClickedAt = Date.now();
-          return;
-        }
-      }
-
-      const importButton = findAction(["Import", "Import data"]);
-      if (clickOnce(importButton, "Opening the My Maps importer...")) {
-        wakeImportFrames();
-        return;
-      }
-
-      if (state.createStarted && !state.createConfirmed) {
-        const createConfirm = findAction(["Create"]);
-        if (
-          createConfirm &&
-          clickOnce(createConfirm, "Creating a fresh map...")
-        ) {
-          state.createConfirmed = true;
-          return;
-        }
-      }
-
-      const createMap = findAction([
-        "Create a new map",
-        "Create a map",
-        "Create map",
-      ]);
-      if (clickOnce(createMap, "Creating a fresh map...")) {
-        state.createStarted = true;
-        return;
+      for (const step of STEPS) {
+        if (!step.ready()) continue;
+        state.lastReadyStep = step.id;
+        if (step.act()) return;
       }
     } finally {
       state.pumping = false;

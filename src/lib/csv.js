@@ -5,6 +5,8 @@
 // present we still include them so users can choose to position by
 // coordinates instead.
 
+import { hasCoords } from "./places.js";
+
 const HEADERS = [
   "Name",
   "Address",
@@ -49,23 +51,17 @@ export function tripToMyMapsAutoImportCsv(trip) {
   let skippedCount = 0;
 
   for (const place of trip.places || []) {
-    const hasCoords =
-      place.lat != null &&
-      place.lng != null &&
-      place.lat !== "" &&
-      place.lng !== "" &&
-      Number.isFinite(Number(place.lat)) &&
-      Number.isFinite(Number(place.lng));
+    const coords = hasCoords(place);
     const address =
       typeof place.address === "string" ? place.address.trim() : "";
-    if (!hasCoords && !address) {
+    if (!coords && !address) {
       skippedCount += 1;
       continue;
     }
 
     rows.push([
       place.name || "",
-      hasCoords ? `${Number(place.lat)},${Number(place.lng)}` : address,
+      coords ? `${Number(place.lat)},${Number(place.lng)}` : address,
       place.category || "",
       place.notes || "",
       place.sourceUrl || "",

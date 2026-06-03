@@ -1,4 +1,8 @@
-"""Generate simple placeholder icons for the TripAnchor Chrome extension.
+"""Resize icons/icon.png into the three sizes Chrome needs.
+
+Trims transparent padding from the source so the artwork fills the toolbar
+slot (Chrome renders the file at its native pixel size, so empty alpha
+around the art makes the icon look small next to icons that reach the edge).
 
 Produces icons/icon16.png, icons/icon48.png, icons/icon128.png.
 Run with: python3 scripts/make_icons.py
@@ -8,59 +12,59 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from PIL import Image, ImageDraw
+from PIL import Image
 
 ROOT = Path(__file__).resolve().parent.parent
 ICON_DIR = ROOT / "icons"
-ICON_DIR.mkdir(exist_ok=True)
+SOURCE = ICON_DIR / "icon.png"
+SIZES = (16, 48, 128)
 
-BG = (24, 99, 175)       # ocean blue
-PIN = (255, 255, 255)    # white pin
-DOT = (24, 99, 175)      # inner dot matches bg
+# Faint pixels below this alpha are treated as transparent when finding the
+# artwork bbox. Without a threshold a single 1-alpha pixel anywhere in the
+# canvas defeats the crop.
+ALPHA_THRESHOLD = 30
+
+# Padding (as a fraction of the final canvas) kept inside the tight crop. Set
+# to 0 for edge-to-edge in the toolbar.
+INNER_PADDING_RATIO = 0.0
+
+# "fill" picks the SHORTER bbox dimension as the square side (the long axis
+# gets cropped — maximum render size in the toolbar). "fit" picks the LONGER
+# dimension (no cropping — the artwork is fully visible but leaves transparent
+# bars on the short axis, which makes the icon look smaller).
+SQUARE_MODE = "fill"
 
 
-def draw_icon(size: int) -> Image.Image:
-    img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
-    d = ImageDraw.Draw(img)
-
-    pad = max(1, size // 16)
-    radius = max(2, size // 5)
-    d.rounded_rectangle([pad, pad, size - pad, size - pad], radius=radius, fill=BG)
-
-    cx = size / 2
-    head_r = size * 0.22
-    head_top = size * 0.22
-    head_bottom = head_top + head_r * 2
-    d.ellipse(
-        [cx - head_r, head_top, cx + head_r, head_bottom],
-        fill=PIN,
-    )
-
-    tip_y = size * 0.82
-    tail_w = head_r * 0.9
-    d.polygon(
-        [
-            (cx - tail_w, head_bottom - head_r * 0.4),
-            (cx + tail_w, head_bottom - head_r * 0.4),
-            (cx, tip_y),
-        ],
-        fill=PIN,
-    )
-
-    dot_r = head_r * 0.42
-    dot_cy = head_top + head_r
-    d.ellipse(
-        [cx - dot_r, dot_cy - dot_r, cx + dot_r, dot_cy + dot_r],
-        fill=DOT,
-    )
-
-    return img
+def tight_square(img: Image.Image) -> Image.Image:
+    """Crop transparent padding and produce a square canvas of the artwork."""
+    alpha = img.split()[-1]
+    mask = alpha.point(lambda a: 255 if a > ALPHA_THRESHOLD else 0)
+    bbox = mask.getbbox()
+    if bbox is None:
+        return img
+    cropped = img.crop(bbox)
+    cw, ch = cropped.size
+    side = min(cw, ch) if SQUARE_MODE == "fill" else max(cw, ch)
+    canvas_side = max(1, int(round(side / (1 - 2 * INNER_PADDING_RATIO))))
+    canvas = Image.new("RGBA", (canvas_side, canvas_side), (0, 0, 0, 0))
+    # Center the artwork on the square. When SQUARE_MODE=="fill" this means
+    # the long axis is cropped symmetrically; "fit" leaves transparent margins.
+    canvas.paste(cropped, ((canvas_side - cw) // 2, (canvas_side - ch) // 2))
+    return canvas
 
 
 def main() -> None:
-    for size in (16, 48, 128):
+    if not SOURCE.exists():
+        raise SystemExit(
+            f"Source icon not found at {SOURCE}. Drop a square PNG there first."
+        )
+    src = Image.open(SOURCE).convert("RGBA")
+    squared = tight_square(src)
+    print(f"source {src.size} → tight-square {squared.size}")
+    for size in SIZES:
+        out = squared.resize((size, size), Image.LANCZOS)
         path = ICON_DIR / f"icon{size}.png"
-        draw_icon(size).save(path, "PNG")
+        out.save(path, "PNG", optimize=True)
         print(f"wrote {path}")
 
 

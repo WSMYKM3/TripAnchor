@@ -389,17 +389,5 @@
     };
   }
 
-  globalThis.TripAnchorExtractors = {
-    extract,
-    _internal: {
-      collectFromJsonLd,
-      collectFromMeta,
-      collectFromMaps,
-      formatAddress,
-      readGeo,
-      parseCoordsFromMapsUrl,
-      dedupe,
-      rank,
-    },
-  };
+  globalThis.TripAnchorExtractors = { extract };
 })();

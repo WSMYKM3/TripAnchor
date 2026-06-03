@@ -11,10 +11,12 @@
         <img src="../../icons/icon48.png" alt="" width="20" height="20" />
         <span>TripAnchor</span>
       </div>
-      <div class="ta-trip">
+      <div class="ta-trip" title="Active trip">
         <span id="ta-trip-name">My Trip</span>
-        <button id="ta-manage-trips" class="ta-link" title="Manage trips">
-          Manage
+        <button id="ta-manage-trips" class="ta-link" title="Manage trips" aria-label="Manage trips">
+          <svg width="10" height="10" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M6 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </button>
       </div>
     </header>
@@ -38,7 +40,7 @@
     <section class="ta-section">
       <div class="ta-section-head">
         <h2>Saved (<span id="ta-saved-count">0</span>)</h2>
-        <button id="ta-clear" class="ta-link" title="Clear this trip">
+        <button id="ta-clear" class="ta-link ta-link-danger" title="Clear this trip">
           Clear
         </button>
       </div>
@@ -52,6 +54,9 @@
         <h2>Export to Google My Maps</h2>
       </div>
       <button id="ta-see-trip" class="ta-primary ta-primary-lg" type="button">
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M8 1.5c-2.5 0-4.5 2-4.5 4.5 0 3.4 4.5 8.5 4.5 8.5s4.5-5.1 4.5-8.5c0-2.5-2-4.5-4.5-4.5zm0 6.2a1.7 1.7 0 110-3.4 1.7 1.7 0 010 3.4z" fill="currentColor"/>
+        </svg>
         See my trip
       </button>
       <details class="ta-more-export">

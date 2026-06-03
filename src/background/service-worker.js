@@ -382,7 +382,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "TA_OPEN_OPTIONS") {
     chrome.runtime.openOptionsPage();
     sendResponse({ ok: true });
-    return false;
+    return true;
   }
 
   return false;

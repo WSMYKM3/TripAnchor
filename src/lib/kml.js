@@ -4,6 +4,8 @@
 // `<coordinates>lng,lat,0</coordinates>` — note the lon-before-lat ordering
 // which is the KML standard.
 
+import { hasCoords } from "./places.js";
+
 const XML_ESCAPES = {
   "&": "&amp;",
   "<": "&lt;",
@@ -17,12 +19,12 @@ export function xmlEscape(value) {
   return String(value).replace(/[&<>"']/g, (c) => XML_ESCAPES[c]);
 }
 
-function hasCoords(place) {
-  if (place.lat == null || place.lng == null) return false;
-  if (place.lat === "" || place.lng === "") return false;
-  const lat = Number(place.lat);
-  const lng = Number(place.lng);
-  return Number.isFinite(lat) && Number.isFinite(lng);
+// CDATA can't contain the literal "]]>". The standard trick is to split the
+// sequence across two adjacent CDATA blocks so a description containing the
+// string survives without being XML-escaped (which would defeat the point of
+// wrapping it in CDATA in the first place).
+function cdataSafe(value) {
+  return String(value).split("]]>").join("]]]]><![CDATA[>");
 }
 
 function placemark(place) {
@@ -42,7 +44,7 @@ function placemark(place) {
     "    <Placemark>",
     `      <name>${xmlEscape(place.name || "Untitled place")}</name>`,
     description
-      ? `      <description><![CDATA[${description}]]></description>`
+      ? `      <description><![CDATA[${cdataSafe(description)}]]></description>`
       : "",
     "      <Point>",
     `        <coordinates>${lng},${lat},0</coordinates>`,
