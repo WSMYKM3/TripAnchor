@@ -5,75 +5,136 @@
     <title>TripAnchor</title>
     <link rel="stylesheet" href="popup.css" />
   </head>
-  <body>
-    <header class="ta-header">
-      <div class="ta-brand">
-        <img src="../../icons/icon48.png" alt="" width="20" height="20" />
-        <span>TripAnchor</span>
-      </div>
-      <div class="ta-trip" title="Active trip">
-        <span id="ta-trip-name">My Trip</span>
-        <button id="ta-manage-trips" class="ta-link" title="Manage trips" aria-label="Manage trips">
-          <svg width="10" height="10" viewBox="0 0 16 16" aria-hidden="true">
-            <path d="M6 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-    </header>
+  <body class="ta-popup">
+    <!-- reusable hand-drawn SVG sprites (paths intentionally uneven) -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <defs>
+        <!-- hand-drawn anchor for the brand mark -->
+        <symbol id="ta-anchor" viewBox="0 0 24 24">
+          <path d="M12 2.5 Q12.4 3 12.5 4 Q12.6 5.2 12 6 Q11.4 5.2 11.5 4 Q11.6 3 12 2.5 Z"
+                fill="currentColor" stroke="#1a140d" stroke-width="0.6"/>
+          <circle cx="12" cy="5" r="1.8" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M12 7 Q11.9 12 12 17.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M7.5 12 Q12 13 16.5 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M4 16 Q5 19 8 20.5 Q11 21.6 12 21.4 Q13 21.6 16 20.5 Q19 19 20 16"
+                fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </symbol>
 
-    <section class="ta-section">
-      <div class="ta-section-head">
-        <h2>From this page</h2>
-        <button id="ta-rescan" class="ta-link" title="Re-scan the active tab">
-          Rescan
-        </button>
-      </div>
-      <div id="ta-candidates" class="ta-list">
-        <div class="ta-empty">Scanning current tab…</div>
-      </div>
-      <div class="ta-row" id="ta-candidate-actions" hidden>
-        <button id="ta-add-selected" class="ta-primary">Add selected</button>
-        <span id="ta-add-status" class="ta-status"></span>
-      </div>
-    </section>
+        <!-- frayed-edge masking-tape rectangle -->
+        <symbol id="ta-tape" viewBox="0 0 64 22">
+          <defs>
+            <linearGradient id="ta-tape-g" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#ecd6a4" stop-opacity="0.6"/>
+              <stop offset="0.5" stop-color="#e8b85a" stop-opacity="0.92"/>
+              <stop offset="1" stop-color="#ecd6a4" stop-opacity="0.6"/>
+            </linearGradient>
+          </defs>
+          <path d="M2 4 L4 1 L9 3 L14 1 L20 4 L26 2 L33 4 L40 1 L47 3 L54 1 L62 4
+                   L60 18 L56 21 L48 19 L42 21 L34 18 L26 21 L18 19 L10 21 L4 18 Z"
+                fill="url(#ta-tape-g)" stroke="#1a140d" stroke-width="0.8" stroke-opacity="0.45"/>
+        </symbol>
 
-    <section class="ta-section">
-      <div class="ta-section-head">
-        <h2>Saved (<span id="ta-saved-count">0</span>)</h2>
-        <button id="ta-clear" class="ta-link ta-link-danger" title="Clear this trip">
-          Clear
-        </button>
-      </div>
-      <div id="ta-saved" class="ta-list">
-        <div class="ta-empty">No places yet.</div>
-      </div>
-    </section>
+        <!-- hand-drawn map pin for the CTA -->
+        <symbol id="ta-pin" viewBox="0 0 24 24">
+          <path d="M12 2.5 Q7 2.6 5.2 6.3 Q3.5 10 6 14 Q8 17 12 21.5 Q16 17 18 14 Q20.5 10 18.8 6.3 Q17 2.6 12 2.5 Z"
+                fill="currentColor" stroke="#1a140d" stroke-width="1.6" stroke-linejoin="round"/>
+          <circle cx="11.8" cy="9" r="2.6" fill="#1a140d"/>
+          <path d="M8 19 Q12 20 16 19" fill="none" stroke="#1a140d" stroke-width="1" opacity="0.4"/>
+        </symbol>
 
-    <section class="ta-section ta-export">
-      <div class="ta-section-head">
-        <h2>Export to Google My Maps</h2>
-      </div>
-      <button id="ta-see-trip" class="ta-primary ta-primary-lg" type="button">
-        <svg viewBox="0 0 16 16" aria-hidden="true">
-          <path d="M8 1.5c-2.5 0-4.5 2-4.5 4.5 0 3.4 4.5 8.5 4.5 8.5s4.5-5.1 4.5-8.5c0-2.5-2-4.5-4.5-4.5zm0 6.2a1.7 1.7 0 110-3.4 1.7 1.7 0 010 3.4z" fill="currentColor"/>
-        </svg>
-        See my trip
-      </button>
-      <details class="ta-more-export">
-        <summary>Download manually</summary>
-        <div class="ta-row">
-          <button id="ta-export-csv" class="ta-secondary" title="Import into Google My Maps to geocode unresolved addresses">
-            Export CSV
-          </button>
-          <button id="ta-export-kml" class="ta-secondary" title="Use when every place has coordinates">
-            Export KML
+        <!-- chevron for the trip-name expander -->
+        <symbol id="ta-chev" viewBox="0 0 16 16">
+          <path d="M5.5 3.5 Q7 4.5 10.5 8 Q7 11.5 5.5 12.5"
+                fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </symbol>
+
+        <!-- sketched compass for the empty state -->
+        <symbol id="ta-compass" viewBox="0 0 64 64">
+          <path d="M32 5 Q14 7 8 26 Q5 45 22 56 Q40 62 54 50 Q62 38 58 22 Q52 8 32 5 Z"
+                fill="#f6e8c4" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/>
+          <path d="M32 12 L37 32 L32 53 L27 32 Z"
+                fill="currentColor" stroke="#1a140d" stroke-width="1.4" stroke-linejoin="round"/>
+          <circle cx="32" cy="32" r="3" fill="#1a140d"/>
+          <path d="M28 8 Q26 6 24 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M40 56 Q44 58 48 60" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </symbol>
+      </defs>
+    </svg>
+
+    <main class="ta-glass-panel">
+      <header class="ta-header">
+        <div class="ta-brand">
+          <svg class="ta-anchor" aria-hidden="true"><use href="#ta-anchor"/></svg>
+          <img src="../../icons/icon48.png" alt="" width="20" height="20" />
+          <span>TripAnchor</span>
+        </div>
+        <button id="ta-manage-trips" class="ta-trip" title="Manage trips" aria-label="Manage trips">
+          <svg class="ta-tape" aria-hidden="true"><use href="#ta-tape"/></svg>
+          <span id="ta-trip-name">My Trip</span>
+          <svg class="ta-trip-chev" width="11" height="11" aria-hidden="true"><use href="#ta-chev"/></svg>
+        </button>
+      </header>
+
+      <section class="ta-section">
+        <div class="ta-section-head">
+          <h2>From this page</h2>
+          <button id="ta-rescan" class="ta-link" title="Re-scan the active tab">
+            rescan
           </button>
         </div>
-        <p class="ta-hint" id="ta-export-hint">
-          For when you want the raw file. CSV lets My Maps geocode unresolved addresses; KML preserves exact coordinates.
-        </p>
-      </details>
-    </section>
+        <div id="ta-candidates" class="ta-list">
+          <div class="ta-empty">
+            <svg class="ta-empty-glyph" aria-hidden="true"><use href="#ta-compass"/></svg>
+            <div class="ta-empty-headline">lookin' for places…</div>
+            <div class="ta-empty-sub">scanning this tab for spots worth saving</div>
+          </div>
+        </div>
+        <div class="ta-row" id="ta-candidate-actions" hidden>
+          <button id="ta-add-selected" class="ta-primary">Add selected</button>
+          <span id="ta-add-status" class="ta-status"></span>
+        </div>
+      </section>
+
+      <section class="ta-section">
+        <div class="ta-section-head">
+          <h2>Saved (<span id="ta-saved-count">0</span>)</h2>
+          <button id="ta-clear" class="ta-link ta-link-danger" title="Clear this trip">
+            clear
+          </button>
+        </div>
+        <div id="ta-saved" class="ta-list">
+          <div class="ta-empty">
+            <svg class="ta-empty-glyph" aria-hidden="true"><use href="#ta-compass"/></svg>
+            <div class="ta-empty-headline">no anchors yet</div>
+            <div class="ta-empty-sub">grab one from the page above ↑</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="ta-section ta-export">
+        <div class="ta-section-head">
+          <h2>Export to Google My Maps</h2>
+        </div>
+        <button id="ta-see-trip" class="ta-primary ta-primary-lg" type="button">
+          <svg aria-hidden="true"><use href="#ta-pin"/></svg>
+          See my trip
+        </button>
+        <details class="ta-more-export">
+          <summary>Download manually</summary>
+          <div class="ta-row">
+            <button id="ta-export-csv" class="ta-secondary" title="Import into Google My Maps to geocode unresolved addresses">
+              Export CSV
+            </button>
+            <button id="ta-export-kml" class="ta-secondary" title="Use when every place has coordinates">
+              Export KML
+            </button>
+          </div>
+          <p class="ta-hint" id="ta-export-hint">
+            For when you want the raw file. CSV lets My Maps geocode unresolved addresses; KML preserves exact coordinates.
+          </p>
+        </details>
+      </section>
+    </main>
 
     <script type="module" src="popup.js"></script>
   </body>

@@ -8,34 +8,109 @@
       /* Page-only layout. Shared component styles live in popup.css. */
       body {
         width: auto;
-        max-width: 720px;
+        max-width: 760px;
         max-height: none;
-        margin: 32px auto;
-        padding: 0 24px 32px;
+        margin: 36px auto;
+        padding: 0 28px 40px;
+        background-size: 320px 320px;
+        background-position: 13px 9px;
       }
+
+      .ta-page-head {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 6px;
+      }
+
+      .ta-page-head .ta-anchor-lg {
+        width: 44px;
+        height: 44px;
+        color: var(--rust);
+        flex-shrink: 0;
+        transform: rotate(-7deg) translateY(4px);
+      }
+
       h1 {
-        font-size: 22px;
-        font-weight: 700;
-        letter-spacing: -0.015em;
+        position: relative;
+        display: inline-block;
+        font-family: var(--display);
+        font-size: 46px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        text-transform: uppercase;
         margin: 0 0 4px;
+        padding-bottom: 4px;
+        color: var(--ink);
+        transform: rotate(-1.4deg);
+        transform-origin: left center;
       }
+
+      h1::after {
+        content: "";
+        position: absolute;
+        left: -8px;
+        right: -16px;
+        bottom: -8px;
+        height: 18px;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 18' preserveAspectRatio='none'><path d='M3 11 Q40 3 80 9 Q120 14 168 7 Q210 2 254 10 Q288 14 316 6' fill='none' stroke='%23c64a28' stroke-width='4.5' stroke-linecap='round'/><path d='M6 14 Q44 18 92 14 Q140 11 192 15 Q240 17 300 14' fill='none' stroke='%231a140d' stroke-width='2.5' stroke-linecap='round' opacity='0.6'/></svg>");
+      }
+
       .ta-page-sub {
+        font-family: var(--hand);
         color: var(--muted);
-        font-size: var(--ts-base);
-        margin: 0 0 20px;
+        font-size: 17px;
+        line-height: 1.35;
+        margin: 16px 0 28px 2px;
+        max-width: 480px;
+        transform: rotate(-0.4deg);
+        transform-origin: left center;
+      }
+
+      /* a torn-edge scribble next to the page sub */
+      .ta-page-sub::before {
+        content: "";
+        display: inline-block;
+        width: 22px;
+        height: 14px;
+        margin-right: 8px;
+        vertical-align: middle;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 14'><path d='M2 7 Q6 3 11 7 T20 7' fill='none' stroke='%231a140d' stroke-width='2' stroke-linecap='round'/><path d='M14 4 L20 7 L14 10' fill='none' stroke='%231a140d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
       }
     </style>
   </head>
   <body>
-    <h1>TripAnchor</h1>
+    <!-- reusable hand-drawn SVG sprites -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <defs>
+        <symbol id="ta-anchor" viewBox="0 0 24 24">
+          <path d="M12 2.5 Q12.4 3 12.5 4 Q12.6 5.2 12 6 Q11.4 5.2 11.5 4 Q11.6 3 12 2.5 Z"
+                fill="currentColor" stroke="#1a140d" stroke-width="0.6"/>
+          <circle cx="12" cy="5" r="1.8" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M12 7 Q11.9 12 12 17.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M7.5 12 Q12 13 16.5 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M4 16 Q5 19 8 20.5 Q11 21.6 12 21.4 Q13 21.6 16 20.5 Q19 19 20 16"
+                fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </symbol>
+      </defs>
+    </svg>
+
+    <div class="ta-page-head">
+      <svg class="ta-anchor-lg" aria-hidden="true"><use href="#ta-anchor"/></svg>
+      <h1>TripAnchor</h1>
+    </div>
     <p class="ta-page-sub">
-      Manage your trips, back up your data, and restore from a previous export.
+      Manage your trips, back up your data, restore from a previous export.
     </p>
 
     <section class="ta-card">
       <h2>Trips</h2>
       <div id="ta-trip-list"></div>
-      <div class="ta-bar" style="margin-top: 12px">
+      <div class="ta-bar" style="margin-top: 14px">
         <input id="ta-new-trip-name" type="text" placeholder="New trip name" />
         <button id="ta-new-trip" class="ta-primary">Create trip</button>
       </div>

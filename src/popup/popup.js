@@ -111,10 +111,26 @@ function svgGlyph(name, { width = 28, height = 28 } = {}) {
   return svg;
 }
 
+function imageIcon(src, className, alt = "") {
+  return el("img", {
+    className,
+    src,
+    alt,
+    loading: "lazy",
+    decoding: "async",
+  });
+}
+
 function renderEmpty(container, { glyph, headline, sub }) {
   clearChildren(container);
   const children = [];
   if (glyph) children.push(svgGlyph(glyph));
+  children.push(
+    el("div", { className: "ta-empty-art", "aria-hidden": "true" }, [
+      imageIcon("../../images/beach.svg", "ta-empty-art-img ta-empty-art-beach"),
+      imageIcon("../../images/tuoxie.svg", "ta-empty-art-img ta-empty-art-tuoxie"),
+    ]),
+  );
   children.push(el("div", { className: "ta-empty-headline", text: headline }));
   if (sub) children.push(el("div", { className: "ta-empty-sub", text: sub }));
   container.append(el("div", { className: "ta-empty" }, children));
@@ -123,14 +139,15 @@ function renderEmpty(container, { glyph, headline, sub }) {
 function renderCandidates() {
   if (!currentCandidates.length) {
     renderEmpty(els.candidates, {
-      glyph: "pin",
-      headline: "No places detected on this page",
-      sub: "Try the right-click “Add selection” to resolve a place via Google Maps.",
+      headline: "No places found",
+      sub: "Try selecting text on the page, then Add selected.",
     });
-    els.candidateActions.hidden = true;
+    els.candidateActions.hidden = false;
+    els.addSelected.disabled = true;
     return;
   }
   clearChildren(els.candidates);
+  els.addSelected.disabled = false;
   for (const [i, c] of currentCandidates.entries()) {
     const id = `ta-cand-${i}`;
     const checkbox = el("input", {
@@ -176,6 +193,10 @@ function renderSaved() {
   }
   clearChildren(els.saved);
   for (const p of places) {
+    const anchorIcon = imageIcon(
+      "../../images/anchorok.svg",
+      "ta-saved-anchor",
+    );
     const tags = el("div", { className: "ta-item-tags" }, [
       plainTag(p.category || "Place"),
       hasCoords(p)
@@ -183,7 +204,10 @@ function renderSaved() {
         : tag("needs geocoding", "ta-tag-nocoord"),
     ]);
     const body = el("div", { className: "ta-item-body" }, [
-      el("div", { className: "ta-item-name", text: p.name || "Untitled" }),
+      el("div", {
+        className: "ta-item-name ta-saved-item-name",
+        text: p.name || "Untitled",
+      }),
       el("div", {
         className: "ta-item-meta",
         text:
@@ -212,7 +236,7 @@ function renderSaved() {
         text: "×",
       }),
     ]);
-    els.saved.append(el("div", { className: "ta-item" }, [body, actions]));
+    els.saved.append(el("div", { className: "ta-item" }, [anchorIcon, body, actions]));
   }
   updateExportHint();
 }
@@ -261,6 +285,8 @@ async function refreshSaved() {
 }
 
 async function scanActiveTab() {
+  els.candidateActions.hidden = true;
+  els.addSelected.disabled = true;
   renderEmpty(els.candidates, {
     glyph: "scan",
     headline: "Scanning current tab…",

@@ -21,98 +21,118 @@
   src: url("../../fonts/Inter-SemiBold.woff2") format("woff2");
 }
 
-/* ---------- Design tokens — travel-warm ---------- */
+/* ---------- Caveat (real handwriting, swaps in for Permanent Marker) ---------- */
+@font-face {
+  font-family: "Caveat";
+  font-style: normal;
+  font-weight: 400 700;   /* variable */
+  font-display: swap;
+  src: url("../../fonts/Caveat.woff2") format("woff2");
+}
+
+/* ============================================================
+   HANDMADE FILM-GRADE TOKENS
+   ============================================================ */
 :root {
-  /* surfaces */
-  --bg: #fbf7f1;
-  --bg-soft: #f4ecdf;
-  --bg-card: #ffffff;
-  --border: #e8dfce;
-  --border-strong: #d6c9b0;
+  /* deep warm darks */
+  --ink:           #1a140d;
+  --shadow-warm:   #322618;
+  --shadow-deep:   #1c1409;
+  --teal-shadow:   #2a423d;
 
-  /* type */
-  --text: #2a241d;
-  --muted: #7a6f5f;
+  /* tungsten highlights */
+  --tungsten:      #e8b85a;
+  --tungsten-dim:  #c89848;
+  --cream-aged:    #ecd6a4;
+  --paper-warm:    #e0c898;
+  --bone:          #f6e8c4;
 
-  /* terracotta accent */
-  --accent: #c76847;
-  --accent-hover: #a8533a;
-  --accent-soft: #fbede6;
-  --focus-ring: rgba(199, 104, 71, 0.45);
+  /* oily pops */
+  --rust:          #c64a28;
+  --rust-deep:     #8a3018;
+  --blue-cold:     #4d80a4;
+  --blue-deep:     #2c4e72;
+  --olive:         #4a6e3a;
 
-  /* sage / honey / brick */
-  --ok: #6b8e5a;
-  --ok-soft: #eef3e5;
-  --warn: #b58536;
-  --warn-soft: #fbf1d9;
-  --danger: #b23d2e;
-  --danger-soft: #f8e2dc;
+  /* mapped semantic tokens (kept so popup.js style assumptions hold) */
+  --bg:            var(--paper-warm);
+  --bg-soft:       var(--cream-aged);
+  --bg-card:       var(--bone);
+  --border:        var(--ink);
+  --border-strong: var(--ink);
 
-  /* depth */
-  --shadow-sm: 0 1px 2px rgba(42, 36, 29, 0.06);
-  --shadow-md: 0 4px 14px rgba(42, 36, 29, 0.09);
-  --shadow-cta: 0 1px 2px rgba(184, 86, 59, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
-  --shadow-cta-hover: 0 6px 16px rgba(184, 86, 59, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  --text:  var(--ink);
+  --muted: #6b5135;
 
-  /* shape */
-  --r-sm: 6px;
+  --accent:        var(--rust);
+  --accent-hover:  var(--rust-deep);
+  --accent-soft:   rgba(198, 74, 40, 0.16);
+  --focus-ring:    rgba(198, 74, 40, 0.5);
+
+  --ok:        var(--olive);
+  --ok-soft:   rgba(74, 110, 58, 0.22);
+  --warn:      var(--tungsten-dim);
+  --warn-soft: rgba(232, 184, 90, 0.28);
+  --danger:        var(--rust);
+  --danger-soft:   rgba(198, 74, 40, 0.20);
+
+  /* legacy shadow names (kept for any component still referencing them) */
+  --shadow-sm:        4px 5px 0 var(--ink);
+  --shadow-md:        5px 4px 0 var(--ink);
+  --shadow-cta:       4px 5px 0 var(--ink);
+  --shadow-cta-hover: 5px 7px 0 var(--rust-deep);
+
+  --r-sm: 4px;
   --r-md: 10px;
   --r-pill: 999px;
 
-  /* type scale */
   --ts-xs: 11px;
   --ts-sm: 12px;
   --ts-base: 13px;
   --ts-md: 14px;
   --ts-lg: 15px;
+
+  --display:
+    "Archivo Black", "Impact", "Arial Black", "Helvetica Neue",
+    sans-serif;
+  --hand:
+    "Caveat", "Marker Felt", "Bradley Hand", "Comic Sans MS", cursive;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #1c1812;
-    --bg-soft: #241f17;
-    --bg-card: #28231b;
-    --border: #3a3022;
-    --border-strong: #4a3f2d;
+    --bg:            var(--shadow-warm);
+    --bg-soft:       #3d2e1d;
+    --bg-card:       #463520;
+    --border:        var(--ink);
 
-    --text: #f0e8d9;
-    --muted: #a39787;
+    --text:  var(--bone);
+    --muted: var(--cream-aged);
 
-    --accent: #e58566;
-    --accent-hover: #f0a085;
-    --accent-soft: #3a241c;
-    --focus-ring: rgba(229, 133, 102, 0.55);
+    --accent:       #e36a48;
+    --accent-hover: var(--tungsten);
+    --accent-soft:  rgba(232, 184, 90, 0.18);
+    --focus-ring:   rgba(232, 184, 90, 0.55);
 
-    --ok: #9dbe85;
-    --ok-soft: #1f291c;
-    --warn: #dcae5e;
-    --warn-soft: #2e2517;
-    --danger: #e07a6a;
-    --danger-soft: #321d1a;
-
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.45);
+    --ok:        #9dbe85;
+    --ok-soft:   rgba(157, 190, 133, 0.20);
+    --warn:      var(--tungsten);
+    --warn-soft: rgba(232, 184, 90, 0.22);
+    --danger:        #e07a6a;
+    --danger-soft:   rgba(224, 122, 106, 0.22);
   }
 }
 
-/* ---------- Base ---------- */
-* {
-  box-sizing: border-box;
-}
+/* ============================================================
+   BASE
+   ============================================================ */
+* { box-sizing: border-box; }
 
-html,
-body {
+html, body {
   margin: 0;
   padding: 0;
   font-family:
-    "Inter",
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    sans-serif;
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: var(--ts-base);
   line-height: 1.45;
   font-feature-settings: "cv11", "ss01", "tnum";
@@ -127,42 +147,112 @@ body {
   max-height: 600px;
   display: flex;
   flex-direction: column;
+  position: relative;
+  background-color: var(--bg);
+  /* layered kraft texture — non-aligned position so the tile doesn't telegraph */
+  background-image: url("../../icons/textures/paper-kraft.svg");
+  background-size: 320px 320px;
+  background-position: 7px 13px;
+  background-repeat: repeat;
 }
 
-/* ---------- Header ---------- */
+/* scanned-grain overlay — single SVG sheet, no radial gradient */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  background-image: url("../../icons/textures/paper-kraft.svg");
+  background-size: 200px 200px;
+  background-position: -23px 41px;
+}
+
+/* ============================================================
+   HEADER — handmade brand mark + tape-strip on trip pill
+   ============================================================ */
 .ta-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  padding: 12px;
-  background: linear-gradient(180deg, var(--bg-soft), var(--bg));
-  box-shadow: 0 1px 0 var(--border-strong);
+  padding: 14px 12px 16px;
+  background: var(--tungsten);
+  border-bottom: 2.5px solid var(--ink);
+  position: relative;
+  z-index: 1;
+  /* ragged underline drawn by SVG inline data so it doesn't read as a CSS line */
+  background-image:
+    url("../../icons/textures/paper-kraft.svg"),
+    linear-gradient(180deg, transparent calc(100% - 14px), rgba(26,20,13,0.0) 100%);
+  background-size: 240px 240px, auto;
+  background-position: 11px -3px, 0 0;
+  background-blend-mode: multiply, normal;
 }
 
 .ta-brand {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
+  font-family: var(--display);
   font-size: var(--ts-md);
   font-weight: 600;
-  color: var(--text);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--ink);
+  transform: rotate(-1.3deg);
+  transform-origin: left center;
 }
 
 .ta-brand img {
   display: block;
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  background: var(--bone);
+  box-shadow: 2px 3px 0 var(--rust-deep);
+  transform: rotate(2.6deg);
+}
+
+/* hand-drawn anchor sits in front of the wordmark via inline SVG (in HTML) */
+.ta-brand svg.ta-anchor {
+  width: 18px;
+  height: 18px;
+  margin-right: 2px;
+  color: var(--rust);
+  transform: rotate(-6deg) translateY(1px);
 }
 
 .ta-trip {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   max-width: 180px;
-  padding: 4px 8px 4px 12px;
-  background: var(--accent-soft);
-  color: var(--accent);
-  border-radius: var(--r-pill);
-  font-size: var(--ts-sm);
-  font-weight: 500;
+  padding: 5px 12px;
+  background: var(--rust);
+  color: var(--bone);
+  border: 2.5px solid var(--ink);
+  border-radius: 22px 18px 24px 16px / 16px 22px 18px 22px;  /* asymmetric corners */
+  box-shadow:
+    4px 5px 0 var(--ink),
+    -1.5px -1.5px 0 var(--tungsten);
+  font-family: var(--hand);
+  font-size: 16px;
+  font-weight: 700;
+  transform: rotate(-3.4deg);
+}
+
+/* masking-tape strip on the trip pill */
+.ta-trip > .ta-tape {
+  position: absolute;
+  top: -7px;
+  left: -10px;
+  width: 32px;
+  height: 12px;
+  transform: rotate(-22deg);
+  pointer-events: none;
+  z-index: 2;
 }
 
 #ta-trip-name {
@@ -170,134 +260,266 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--accent);
-  font-weight: 600;
+  color: var(--bone);
+  letter-spacing: 0.01em;
 }
 
 .ta-trip .ta-link {
-  color: var(--accent);
-  font-weight: 600;
+  color: var(--bone);
+  font-weight: 700;
   display: inline-flex;
   align-items: center;
   gap: 2px;
+  background: none;
+  border: none;
+  padding: 0 2px;
+  text-transform: none;
+  font-family: var(--hand);
+  font-size: 15px;
+  letter-spacing: 0;
 }
 
-/* ---------- Sections ---------- */
+/* ============================================================
+   SECTIONS — different paper per section
+   ============================================================ */
 .ta-section {
-  padding: 14px 12px;
-  border-bottom: 1px solid var(--border);
+  position: relative;
+  padding: 16px 14px;
+  z-index: 1;
 }
 
-.ta-section:last-child {
-  border-bottom: none;
+/* hand-drawn squiggle divider rendered via SVG background, *not* a hazard stripe */
+.ta-section + .ta-section {
+  border-top: 0;
+}
+.ta-section + .ta-section::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 6%;
+  right: 4%;
+  height: 6px;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 6' preserveAspectRatio='none'><path d='M2 3 Q22 0 42 4 T82 3 T122 4 T162 2 T202 4 T242 2 T282 4 T318 3' fill='none' stroke='%231a140d' stroke-width='1.4' stroke-linecap='round'/></svg>");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  opacity: 0.85;
 }
 
+/* notebook ruled section for "Saved" */
+.ta-section:nth-of-type(2) {
+  background-image: url("../../icons/textures/notebook-rule.svg");
+  background-size: 360px 240px;
+  background-position: 0 4px;
+  background-repeat: repeat-y;
+}
+
+/* ============================================================
+   SECTION HEADS — scribble underline replaces text-shadow comic
+   ============================================================ */
 .ta-section-head {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  position: relative;
 }
 
 .ta-section-head h2 {
+  position: relative;
   margin: 0;
-  font-size: var(--ts-md);
+  font-family: var(--display);
+  font-size: 15px;
   font-weight: 600;
-  color: var(--text);
-  letter-spacing: -0.01em;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  padding-bottom: 4px;
+  /* no text-shadow! underline comes from SVG bg, varied per section */
 }
 
-/* ---------- Lists & empty states ---------- */
+.ta-section-head h2::after {
+  content: "";
+  position: absolute;
+  left: -4px;
+  right: -10px;
+  bottom: -3px;
+  height: 9px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  pointer-events: none;
+}
+
+/* three scribble variants by nth-of-type */
+.ta-section:nth-of-type(1) .ta-section-head h2::after {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 9' preserveAspectRatio='none'><path d='M3 6 Q26 1 50 5 T98 4 T142 6 T188 3 L196 5' fill='none' stroke='%23c64a28' stroke-width='3' stroke-linecap='round'/></svg>");
+}
+.ta-section:nth-of-type(2) .ta-section-head h2::after {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 9' preserveAspectRatio='none'><path d='M2 4 Q24 8 46 3 Q68 1 92 6 Q116 8 140 3 Q166 1 192 5' fill='none' stroke='%231a140d' stroke-width='2.6' stroke-linecap='round'/><path d='M5 7 Q30 5 56 6 Q90 7 130 5 Q165 4 195 7' fill='none' stroke='%23c64a28' stroke-width='1.6' stroke-linecap='round' opacity='0.7'/></svg>");
+}
+.ta-section:nth-of-type(3) .ta-section-head h2::after {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 9' preserveAspectRatio='none'><path d='M2 5 L22 3 L48 6 L78 2 L112 6 L150 3 L186 6 L196 4' fill='none' stroke='%234d80a4' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+}
+
+/* "Saved (n)" count — oversized hand-drawn bleed above baseline */
+.ta-section:nth-of-type(2) .ta-section-head h2 {
+  font-family: var(--display);
+}
+#ta-saved-count {
+  display: inline-block;
+  font-family: var(--hand);
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--rust);
+  margin: -14px 2px -8px 4px;
+  line-height: 1;
+  transform: rotate(-7deg);
+  position: relative;
+  top: 4px;
+}
+
+/* ============================================================
+   LISTS & EMPTY STATES
+   ============================================================ */
 .ta-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 9px;
   max-height: 220px;
   overflow-y: auto;
   scrollbar-gutter: stable;
   scrollbar-width: thin;
-  scrollbar-color: var(--border-strong) transparent;
+  scrollbar-color: var(--ink) transparent;
+  padding: 2px 4px 4px 2px;
 }
 
-.ta-list::-webkit-scrollbar {
-  width: 6px;
-}
+.ta-list::-webkit-scrollbar { width: 8px; }
 .ta-list::-webkit-scrollbar-thumb {
-  background: var(--border-strong);
-  border-radius: 3px;
-}
-.ta-list::-webkit-scrollbar-thumb:hover {
-  background: var(--muted);
+  background: var(--ink);
+  border-radius: 4px;
+  border: 1px solid var(--tungsten);
 }
 
 .ta-empty {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  padding: 16px 8px;
+  gap: 6px;
+  padding: 22px 14px 18px;
   text-align: center;
-  color: var(--muted);
-  font-size: var(--ts-sm);
+  color: var(--ink);
+  /* uneven dotted "stroke" via inline SVG bg, NOT CSS dashed border */
+  background-color: rgba(246, 232, 196, 0.55);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'><rect x='3' y='3' width='calc(100%25 - 6px)' height='calc(100%25 - 6px)' rx='10' fill='none' stroke='%231a140d' stroke-width='2.2' stroke-linecap='round' stroke-dasharray='5 7 2 8 6 5 3 9'/></svg>");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+  transform: rotate(-0.6deg);
 }
 
 .ta-empty-glyph {
-  width: 28px;
-  height: 28px;
-  opacity: 0.45;
-  margin-bottom: 4px;
+  width: 38px;
+  height: 38px;
+  color: var(--rust);
+  margin-bottom: 2px;
 }
 
 .ta-empty-headline {
-  font-size: var(--ts-base);
-  font-weight: 500;
-  color: var(--muted);
+  font-family: var(--hand);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0;
+  line-height: 1;
 }
 
 .ta-empty-sub {
-  font-size: var(--ts-sm);
-  opacity: 0.85;
+  font-family: var(--hand);
+  font-size: 15px;
+  color: var(--muted);
   max-width: 260px;
+  line-height: 1.2;
 }
 
-/* ---------- Cards / items ---------- */
+/* ============================================================
+   ITEMS / CARDS — asymmetric rotations + varied shadows
+   ============================================================ */
 .ta-item {
   display: flex;
   gap: 10px;
   padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
+  border: 2px solid var(--ink);
+  border-radius: 9px 12px 8px 11px;  /* asymmetric corners */
   background: var(--bg-card);
-  box-shadow: var(--shadow-sm);
-  transition:
-    transform 140ms ease,
-    box-shadow 140ms ease,
-    border-color 140ms ease;
+  transition: transform 160ms cubic-bezier(0.4, 1.5, 0.5, 1),
+              box-shadow 160ms ease,
+              background 140ms ease;
+}
+
+/* three rotation + shadow variants — feels hand-arranged, not stamped */
+.ta-item:nth-child(3n+1) {
+  transform: rotate(-1.4deg);
+  box-shadow: 4px 5px 0 var(--ink), -1px -1px 0 var(--blue-cold);
+}
+.ta-item:nth-child(3n+2) {
+  transform: rotate(0.8deg);
+  box-shadow: 6px 3px 0 var(--rust-deep);
+}
+.ta-item:nth-child(3n+3) {
+  transform: rotate(-2.6deg);
+  box-shadow: 3px 6px 0 var(--ink), 1px 1px 0 var(--tungsten);
 }
 
 .ta-item:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--accent-soft);
+  background: var(--bone);
+  transform: translate(-1px, -3px) rotate(0deg);
+  box-shadow: 7px 8px 0 var(--rust-deep);
 }
 
 .ta-item:active {
-  transform: translateY(0) scale(0.997);
-  box-shadow: var(--shadow-sm);
+  transform: translate(2px, 2px) rotate(-0.5deg);
+  box-shadow: 1px 1px 0 var(--ink);
 }
 
-.ta-item.ta-candidate {
-  cursor: pointer;
-}
+.ta-item.ta-candidate { cursor: pointer; }
+.ta-item.ta-candidate:hover { background: var(--cream-aged); }
 
-.ta-item.ta-candidate:hover {
-  border-color: var(--accent);
-}
-
+/* ============================================================
+   CUSTOM CHECKBOX — wobbly marker check
+   ============================================================ */
 .ta-item input[type="checkbox"] {
-  margin-top: 2px;
+  appearance: none;
+  -webkit-appearance: none;
+  margin-top: 3px;
   flex-shrink: 0;
-  accent-color: var(--accent);
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid var(--ink);
+  border-radius: 3px 5px 4px 3px;
+  background: var(--bone);
+  cursor: pointer;
+  transform: rotate(-3deg);
+  position: relative;
+  transition: background 120ms ease, transform 120ms ease;
+}
+
+.ta-item input[type="checkbox"]:hover {
+  background: var(--cream-aged);
+}
+
+.ta-item input[type="checkbox"]:checked {
+  background: var(--bone);
+}
+
+.ta-item input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  inset: -4px -2px -2px -3px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 13 Q7 17 10 20 Q12 18 14 13 Q17 7 21 3' fill='none' stroke='%23c64a28' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  transform: rotate(4deg);
 }
 
 .ta-item-body {
@@ -309,9 +531,10 @@ body {
 }
 
 .ta-item-name {
-  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
   font-size: var(--ts-md);
-  color: var(--text);
+  color: var(--ink);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -329,24 +552,33 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-top: 4px;
+  margin-top: 5px;
   flex-wrap: wrap;
 }
 
-/* ---------- Tag pills ---------- */
+/* ============================================================
+   TAGS — sticker pills with hand-drawn tick
+   ============================================================ */
 .ta-tag {
   display: inline-flex;
   align-items: center;
-  background: var(--bg-soft);
-  color: var(--muted);
-  border: 1px solid var(--border);
-  border-radius: var(--r-pill);
-  padding: 2px 9px;
-  font-size: var(--ts-xs);
-  font-weight: 500;
-  line-height: 1.4;
+  background: var(--bone);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 14px 10px 16px 8px;  /* asymmetric */
+  padding: 1px 9px 1px 7px;
+  font-family: var(--display);
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1.55;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   white-space: nowrap;
 }
+
+/* varied rotations on tag chips */
+.ta-tag:nth-child(odd)  { transform: rotate(-2.1deg); }
+.ta-tag:nth-child(even) { transform: rotate(1.6deg); box-shadow: 2px 2px 0 var(--ink); }
 
 .ta-tag::before {
   content: "";
@@ -359,35 +591,54 @@ body {
   flex-shrink: 0;
 }
 
-.ta-tag.ta-tag-plain::before {
-  display: none;
-}
+.ta-tag.ta-tag-plain::before { display: none; }
 
+/* coord tag — hand-drawn tick instead of a dot */
 .ta-tag.ta-tag-coord {
-  color: var(--ok);
-  border-color: color-mix(in srgb, var(--ok) 35%, transparent);
-  background: var(--ok-soft);
+  background: var(--olive);
+  color: var(--bone);
+}
+.ta-tag.ta-tag-coord::before {
+  width: 12px;
+  height: 12px;
+  border-radius: 0;
+  background: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'><path d='M2 7 Q4 10 6 12 Q8 9 10 6 Q12 2 13 1' fill='none' stroke='%23f6e8c4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-size: 100% 100%;
 }
 
 .ta-tag.ta-tag-nocoord {
-  color: var(--warn);
-  border-color: color-mix(in srgb, var(--warn) 35%, transparent);
-  background: var(--warn-soft);
+  color: var(--ink);
+  background: var(--tungsten);
 }
 
 .ta-tag.ta-tag-bad {
-  color: var(--danger);
-  border-color: color-mix(in srgb, var(--danger) 35%, transparent);
-  background: var(--danger-soft);
+  color: var(--bone);
+  background: var(--rust);
 }
 
-/* ---------- Item actions (reveal-on-hover) ---------- */
+/* "active" stamp pill — doubled border looks like a real ink stamp */
+.ta-tag.ta-tag-plain {
+  background: var(--rust);
+  color: var(--bone);
+  border-color: var(--ink);
+  box-shadow:
+    inset 0 0 0 2.5px var(--bone),
+    inset 0 0 0 4.5px var(--rust),
+    3px 3px 0 var(--ink);
+  padding: 2px 12px;
+  transform: rotate(-4deg);
+}
+
+/* ============================================================
+   ITEM ACTIONS
+   ============================================================ */
 .ta-item-actions {
   display: flex;
   align-items: center;
   gap: 2px;
   flex-shrink: 0;
-  opacity: 0.35;
+  opacity: 0.45;
   transition: opacity 140ms ease;
 }
 
@@ -398,42 +649,49 @@ body {
 
 .ta-icon-btn {
   background: none;
-  border: none;
-  color: var(--muted);
+  border: 1.5px solid transparent;
+  color: var(--ink);
   cursor: pointer;
-  padding: 4px 6px;
+  padding: 3px 6px;
   font-size: 13px;
   line-height: 1;
   border-radius: var(--r-sm);
-  transition:
-    color 120ms ease,
-    background 120ms ease;
+  transition: color 120ms ease, background 120ms ease, border-color 120ms ease;
 }
 
 .ta-icon-btn:hover {
-  color: var(--danger);
-  background: var(--danger-soft);
+  color: var(--bone);
+  background: var(--rust);
+  border-color: var(--ink);
+  transform: rotate(-4deg);
 }
 
 .ta-source-link {
-  color: var(--muted);
+  color: var(--ink);
   text-decoration: none;
   font-size: var(--ts-sm);
-  padding: 2px 4px;
+  padding: 2px 6px;
   border-radius: var(--r-sm);
-  transition: color 120ms ease;
+  border: 1.5px solid transparent;
+  transition: all 120ms ease;
 }
 
 .ta-source-link:hover {
-  color: var(--accent);
+  color: var(--bone);
+  background: var(--blue-cold);
+  border-color: var(--ink);
+  transform: rotate(3deg);
 }
 
-/* ---------- Buttons ---------- */
+/* ============================================================
+   BUTTONS — sticker style with varied shadow direction
+   ============================================================ */
 .ta-row {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 10px;
+  gap: 10px;
+  margin-top: 12px;
+  position: relative;
 }
 
 .ta-primary,
@@ -443,104 +701,138 @@ body {
   justify-content: center;
   gap: 6px;
   font: inherit;
+  font-family: var(--display);
   font-size: var(--ts-sm);
   font-weight: 600;
-  padding: 7px 14px;
-  border-radius: var(--r-md);
-  border: 1px solid transparent;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 9px 16px;
+  border-radius: 11px 7px 13px 8px;  /* asymmetric corners */
+  border: 2.5px solid var(--ink);
   cursor: pointer;
   transition:
     background 140ms ease,
-    box-shadow 140ms ease,
-    transform 80ms ease,
-    border-color 140ms ease,
+    box-shadow 140ms cubic-bezier(0.4, 1.5, 0.5, 1),
+    transform 100ms cubic-bezier(0.4, 1.5, 0.5, 1),
     color 140ms ease;
 }
 
 .ta-primary {
-  background: var(--accent);
-  color: #fff;
-  box-shadow: var(--shadow-cta);
+  background: var(--rust);
+  color: var(--bone);
+  box-shadow: 5px 6px 0 var(--ink), -1.5px -1.5px 0 var(--tungsten);
+  transform: rotate(-1.2deg);
 }
 
 .ta-primary:hover:not(:disabled) {
-  background: var(--accent-hover);
-  box-shadow: var(--shadow-cta-hover);
-  transform: translateY(-1px);
+  background: var(--rust-deep);
+  box-shadow: 7px 9px 0 var(--ink);
+  transform: rotate(-0.3deg) translate(-1px, -2px);
 }
 
 .ta-primary:active:not(:disabled) {
-  transform: translateY(0);
-  box-shadow: var(--shadow-cta);
+  transform: rotate(-1deg) translate(3px, 3px);
+  box-shadow: 1px 1px 0 var(--ink);
 }
 
 .ta-primary.ta-primary-danger {
-  background: var(--danger);
-  box-shadow: 0 1px 2px rgba(178, 61, 46, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  background: var(--rust-deep);
+  color: var(--tungsten);
+  transform: rotate(1.4deg);
 }
 
 .ta-primary.ta-primary-danger:hover:not(:disabled) {
-  filter: brightness(0.93);
+  background: var(--ink);
+  color: var(--tungsten);
 }
 
 .ta-primary:disabled,
 .ta-secondary:disabled {
-  opacity: 0.5;
+  opacity: 0.55;
   cursor: not-allowed;
-  box-shadow: none;
-  transform: none;
+  box-shadow: 2px 2px 0 var(--ink);
+  transform: rotate(0deg);
 }
 
 .ta-secondary {
-  background: var(--bg-card);
-  border-color: var(--border);
-  color: var(--text);
+  background: var(--tungsten);
+  color: var(--ink);
+  box-shadow: 3px 5px 0 var(--ink);
+  transform: rotate(0.9deg);
 }
 
 .ta-secondary:hover:not(:disabled) {
-  border-color: var(--accent);
-  color: var(--accent);
+  background: var(--bone);
+  box-shadow: 5px 7px 0 var(--rust-deep);
+  transform: rotate(-0.4deg) translate(-1px, -2px);
+}
+
+.ta-secondary:active:not(:disabled) {
+  transform: rotate(1deg) translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--ink);
 }
 
 .ta-primary-lg {
   display: flex;
   width: 100%;
-  min-height: 44px;
-  padding: 10px 16px;
-  font-size: var(--ts-md);
+  min-height: 50px;
+  padding: 12px 16px;
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  transform: rotate(-0.6deg);
 }
 
 .ta-primary-lg svg {
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
 }
 
 .ta-link {
   background: none;
   border: none;
-  color: var(--accent);
+  color: var(--rust);
   cursor: pointer;
-  font: inherit;
-  font-size: var(--ts-sm);
-  font-weight: 500;
-  padding: 0;
-  text-decoration: none;
+  font-family: var(--hand);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  padding: 4px 8px;
+  border-radius: var(--r-sm);
+  transition: all 120ms ease;
 }
 
 .ta-link:hover {
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  color: var(--rust-deep);
+  transform: rotate(-2deg) translateY(-1px);
+  text-decoration: underline wavy var(--rust);
+  text-underline-offset: 3px;
 }
 
-.ta-link.ta-link-danger {
-  color: var(--danger);
+.ta-link.ta-link-danger { color: var(--rust-deep); }
+
+/* hand-drawn arrow pointing at the "Add selected" button */
+#ta-candidate-actions::before {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: -16px;
+  width: 64px;
+  height: 28px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 28'><path d='M58 4 Q40 6 24 14 Q12 20 6 24' fill='none' stroke='%23c64a28' stroke-width='2.4' stroke-linecap='round'/><path d='M6 24 L14 20 M6 24 L11 15' fill='none' stroke='%23c64a28' stroke-width='2.4' stroke-linecap='round'/></svg>");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  transform: rotate(-2deg);
+  opacity: 0.85;
 }
 
-/* ---------- Focus ring ---------- */
+/* ============================================================
+   FOCUS
+   ============================================================ */
 :focus-visible {
-  outline: 2px solid var(--focus-ring);
+  outline: 3px solid var(--focus-ring);
   outline-offset: 2px;
   border-radius: var(--r-sm);
 }
@@ -552,111 +844,130 @@ a:focus-visible,
   border-radius: var(--r-md);
 }
 
-/* ---------- Status pill ---------- */
+/* ============================================================
+   STATUS PILLS + HINT
+   ============================================================ */
 .ta-status {
-  font-size: var(--ts-xs);
-  color: var(--muted);
-  padding: 3px 10px;
-  border-radius: var(--r-pill);
-  background: transparent;
-  animation: ta-slide-in 160ms ease;
+  font-family: var(--hand);
+  font-size: 14px;
+  letter-spacing: 0;
+  color: var(--ink);
+  padding: 3px 12px;
+  border-radius: 14px 10px 16px 12px;
+  border: 2px solid var(--ink);
+  background: var(--bone);
+  box-shadow: 2px 3px 0 var(--ink);
+  transform: rotate(-2deg);
+  animation: ta-pop-in 220ms cubic-bezier(0.4, 1.6, 0.5, 1);
 }
 
-.ta-status:empty {
-  display: none;
-}
+.ta-status:empty { display: none; }
 
-.ta-status.ta-status-ok {
-  color: var(--ok);
-  background: var(--ok-soft);
-}
-
-.ta-status.ta-status-warn {
-  color: var(--warn);
-  background: var(--warn-soft);
-}
+.ta-status.ta-status-ok    { color: var(--bone); background: var(--olive); }
+.ta-status.ta-status-warn  { color: var(--ink);  background: var(--tungsten); }
 
 .ta-hint {
+  font-family: var(--hand);
   color: var(--muted);
-  font-size: var(--ts-sm);
-  margin: 8px 0 0;
+  font-size: 14px;
+  margin: 12px 0 0;
+  line-height: 1.35;
+  padding-left: 14px;
+  border-left: 3px solid var(--rust);
+  transform: rotate(-0.4deg);
 }
 
-/* ---------- Details expander ---------- */
+/* ============================================================
+   EXPORT SECTION — torn-paper top edge
+   ============================================================ */
+.ta-export {
+  position: relative;
+  /* irregular vertices, not a uniform zigzag */
+  clip-path: polygon(
+    0% 6px, 4% 0%, 11% 5px, 18% 1px, 27% 7px, 35% 2px,
+    44% 6px, 52% 0%, 61% 4px, 70% 1px, 79% 7px, 88% 2px,
+    96% 6px, 100% 0%,
+    100% 100%, 0% 100%
+  );
+  margin-top: 4px;
+  padding-top: 22px;
+  background-color: rgba(232, 184, 90, 0.18);
+}
+
+.ta-export + .ta-section::before,
+.ta-export::before { display: none; }
+
+/* ============================================================
+   DETAILS EXPANDER
+   ============================================================ */
 .ta-more-export {
-  margin-top: 12px;
+  margin-top: 14px;
   font-size: var(--ts-sm);
 }
 
 .ta-more-export > summary {
   cursor: pointer;
-  color: var(--muted);
-  padding: 4px 0;
+  font-family: var(--hand);
+  font-size: 15px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink);
+  padding: 6px 0;
   list-style: none;
   display: inline-flex;
   align-items: center;
-  font-weight: 500;
+  font-weight: 700;
 }
 
-.ta-more-export > summary::-webkit-details-marker {
-  display: none;
-}
+.ta-more-export > summary::-webkit-details-marker { display: none; }
 
 .ta-more-export > summary::before {
   content: "";
   display: inline-block;
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   margin-right: 6px;
-  background: currentColor;
-  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M6 4l4 4-4 4' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>")
-    center / contain no-repeat;
-  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M6 4l4 4-4 4' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>")
-    center / contain no-repeat;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M5 3 Q6 4 9 8 Q7 12 5 13' fill='none' stroke='%231a140d' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
   transition: transform 160ms ease;
 }
 
-.ta-more-export[open] > summary::before {
-  transform: rotate(90deg);
-}
+.ta-more-export[open] > summary::before { transform: rotate(90deg); }
+.ta-more-export[open] > summary { color: var(--rust); }
 
-.ta-more-export[open] > summary {
-  color: var(--text);
-}
-
-/* ---------- Inline confirm rows ---------- */
-@keyframes ta-slide-in {
-  from {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+/* ============================================================
+   INLINE CONFIRM ROWS
+   ============================================================ */
+@keyframes ta-pop-in {
+  from { opacity: 0; transform: translateY(-8px) rotate(-6deg) scale(0.9); }
+  to   { opacity: 1; transform: rotate(-2deg); }
 }
 
 .ta-confirm {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 12px;
   padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  background: var(--bg-soft);
-  animation: ta-slide-in 160ms ease;
+  border: 2.5px solid var(--ink);
+  border-radius: 9px 13px 8px 12px;
+  background: var(--cream-aged);
+  box-shadow: 4px 5px 0 var(--ink), -1px -1px 0 var(--blue-cold);
+  transform: rotate(-0.8deg);
+  animation: ta-pop-in 220ms cubic-bezier(0.4, 1.6, 0.5, 1);
 }
 
 .ta-confirm-msg {
-  font-size: var(--ts-sm);
-  color: var(--text);
-  line-height: 1.45;
+  font-family: var(--hand);
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.35;
 }
 
 .ta-confirm-actions {
   display: flex;
-  gap: 6px;
+  gap: 8px;
   justify-content: flex-end;
 }
 
@@ -664,20 +975,23 @@ a:focus-visible,
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 6px;
-  margin-top: 10px;
-  padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  background: var(--bg-soft);
+  gap: 8px;
+  margin-top: 12px;
+  padding: 11px 13px;
+  border: 2.5px solid var(--ink);
+  border-radius: 11px 8px 13px 9px;
+  background: var(--cream-aged);
+  box-shadow: 5px 4px 0 var(--rust-deep);
   width: 100%;
-  animation: ta-slide-in 160ms ease;
+  transform: rotate(0.6deg);
+  animation: ta-pop-in 220ms cubic-bezier(0.4, 1.6, 0.5, 1);
 }
 
 .ta-inline-msg {
   flex: 1;
-  font-size: var(--ts-sm);
-  color: var(--text);
+  font-family: var(--hand);
+  font-size: 15px;
+  color: var(--ink);
   min-width: 0;
 }
 
@@ -685,85 +999,138 @@ a:focus-visible,
   flex: 1;
   font: inherit;
   font-size: var(--ts-sm);
-  padding: 6px 10px;
-  border: 1px solid var(--border);
-  border-radius: var(--r-sm);
-  background: var(--bg-card);
-  color: var(--text);
+  padding: 7px 11px;
+  border: 2.5px solid var(--ink);
+  border-radius: 7px 10px 6px 9px;
+  background: var(--bone);
+  color: var(--ink);
   min-width: 140px;
+  box-shadow: 2px 3px 0 var(--ink);
 }
 
 .ta-inline-input:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--focus-ring);
+  border-color: var(--rust);
+  box-shadow: 2px 3px 0 var(--rust);
 }
 
-/* ---------- Options page shared rules ---------- */
+/* ============================================================
+   OPTIONS PAGE — shared cards/trip rows
+   ============================================================ */
 .ta-card {
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  padding: 16px;
-  margin-bottom: 14px;
+  position: relative;
+  border: 2.5px solid var(--ink);
+  border-radius: 11px 14px 9px 13px;
+  padding: 22px 22px 20px;
+  margin-bottom: 22px;
   background: var(--bg-card);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 6px 7px 0 var(--ink), -2px -2px 0 var(--tungsten);
 }
+
+.ta-card:nth-of-type(odd) {
+  transform: rotate(-0.45deg);
+}
+.ta-card:nth-of-type(even) {
+  transform: rotate(0.6deg);
+  box-shadow: 5px 8px 0 var(--rust-deep);
+}
+
+/* tape strip on every card corner — different angle per card */
+.ta-card::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 18px;
+  width: 64px;
+  height: 22px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 22'><defs><linearGradient id='g' x1='0' x2='0' y1='0' y2='1'><stop offset='0' stop-color='%23ecd6a4' stop-opacity='0.55'/><stop offset='0.5' stop-color='%23e8b85a' stop-opacity='0.85'/><stop offset='1' stop-color='%23ecd6a4' stop-opacity='0.55'/></linearGradient></defs><path d='M2 4 L4 1 L9 3 L14 1 L20 4 L26 2 L33 4 L40 1 L47 3 L54 1 L62 4 L60 18 L56 21 L48 19 L42 21 L34 18 L26 21 L18 19 L10 21 L4 18 Z' fill='url(%23g)' stroke='%231a140d' stroke-width='1' stroke-opacity='0.4'/></svg>");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  transform: rotate(-9deg);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.ta-card:nth-of-type(2)::before { transform: rotate(5deg); left: auto; right: 22px; }
+.ta-card:nth-of-type(3)::before { transform: rotate(-3deg); left: 50%; margin-left: -32px; }
 
 .ta-card h2 {
-  margin: 0 0 12px;
-  font-size: var(--ts-md);
+  margin: 0 0 16px;
+  font-family: var(--display);
+  font-size: 16px;
   font-weight: 600;
-  color: var(--text);
-  letter-spacing: -0.01em;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  position: relative;
+  padding-bottom: 6px;
+  display: inline-block;
+}
+
+.ta-card h2::after {
+  content: "";
+  position: absolute;
+  left: -4px;
+  right: -10px;
+  bottom: -2px;
+  height: 9px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 9' preserveAspectRatio='none'><path d='M3 6 Q26 1 50 5 T98 4 T142 6 T188 3 L196 5' fill='none' stroke='%23c64a28' stroke-width='3' stroke-linecap='round'/></svg>");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 }
 
 .ta-trip-row {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  margin-bottom: 8px;
-  background: var(--bg-card);
-  box-shadow: var(--shadow-sm);
+  padding: 13px 14px;
+  border: 2.5px solid var(--ink);
+  border-radius: 10px 13px 8px 12px;
+  margin-bottom: 11px;
+  background: var(--bone);
   transition:
-    transform 140ms ease,
-    box-shadow 140ms ease,
-    border-color 140ms ease;
+    transform 160ms cubic-bezier(0.4, 1.5, 0.5, 1),
+    box-shadow 160ms ease,
+    background 140ms ease;
 }
 
+.ta-trip-row:nth-child(4n+1) { transform: rotate(-1.2deg); box-shadow: 4px 5px 0 var(--ink); }
+.ta-trip-row:nth-child(4n+2) { transform: rotate(0.7deg);  box-shadow: 6px 3px 0 var(--rust-deep); }
+.ta-trip-row:nth-child(4n+3) { transform: rotate(-0.5deg); box-shadow: 3px 6px 0 var(--ink), 1px 1px 0 var(--tungsten); }
+.ta-trip-row:nth-child(4n+4) { transform: rotate(1.5deg);  box-shadow: 5px 4px 0 var(--ink), -1px -1px 0 var(--blue-cold); }
+
 .ta-trip-row:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--accent-soft);
+  background: var(--cream-aged);
+  transform: translate(-1px, -3px) rotate(0deg);
+  box-shadow: 8px 9px 0 var(--rust-deep);
 }
 
 .ta-trip-row.ta-active {
-  border-color: var(--accent);
-  background: var(--accent-soft);
+  background: var(--tungsten);
+  box-shadow: 6px 8px 0 var(--rust), -2px -2px 0 var(--ink);
 }
 
-.ta-trip-info {
-  flex: 1;
-  min-width: 0;
-}
+.ta-trip-info { flex: 1; min-width: 0; }
 
 .ta-trip-info strong {
   display: block;
+  font-family: var(--display);
   font-size: var(--ts-md);
   font-weight: 600;
-  color: var(--text);
+  color: var(--ink);
+  letter-spacing: 0.01em;
 }
 
 .ta-trip-info span {
   color: var(--muted);
-  font-size: var(--ts-sm);
+  font-family: var(--hand);
+  font-size: 14px;
+  letter-spacing: 0;
 }
 
 .ta-bar {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   align-items: center;
   flex-wrap: wrap;
 }
@@ -771,43 +1138,1017 @@ a:focus-visible,
 input[type="text"] {
   font: inherit;
   font-size: var(--ts-sm);
-  padding: 8px 10px;
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  background: var(--bg-card);
-  color: var(--text);
+  font-weight: 500;
+  padding: 9px 13px;
+  border: 2.5px solid var(--ink);
+  border-radius: 8px 11px 7px 10px;
+  background: var(--bone);
+  color: var(--ink);
   min-width: 200px;
+  box-shadow: 3px 4px 0 var(--ink);
+  transform: rotate(-0.3deg);
 }
 
 input[type="text"]:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--focus-ring);
+  border-color: var(--rust);
+  box-shadow: 3px 4px 0 var(--rust);
+  transform: rotate(0deg);
 }
 
 pre {
   white-space: pre-wrap;
   word-break: break-word;
-  background: var(--bg-soft);
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  padding: 12px;
-  max-height: 240px;
+  background: var(--shadow-warm);
+  color: var(--cream-aged);
+  border: 2.5px solid var(--ink);
+  border-radius: 9px 11px 8px 12px;
+  box-shadow: 4px 5px 0 var(--rust-deep);
+  padding: 16px;
+  max-height: 260px;
   overflow: auto;
   font-size: var(--ts-xs);
-  font-family:
-    ui-monospace,
-    SFMono-Regular,
-    "SF Mono",
-    Menlo,
-    Consolas,
-    monospace;
-  color: var(--text);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  line-height: 1.6;
+  transform: rotate(0.25deg);
 }
 
-/* "active" pill in options trip rows */
-.ta-trip-row .ta-tag.ta-tag-plain {
-  background: var(--accent);
-  color: #fff;
+/* ============================================================
+   POPUP COMPACTNESS PASS
+   Keeps the travel-journal voice, but makes the extension panel scan faster.
+   ============================================================ */
+@media (max-width: 420px) {
+  body::after {
+    opacity: 0.09;
+  }
+
+  .ta-header {
+    align-items: center;
+    padding: 8px 10px;
+    border-bottom-width: 1.5px;
+    background-position: 8px -12px, 0 0;
+    background-size: 200px 200px, auto;
+    box-shadow: none;
+  }
+
+  .ta-brand {
+    gap: 6px;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    transform: none;
+  }
+
+  .ta-brand svg.ta-anchor {
+    display: none;
+  }
+
+  .ta-brand img {
+    width: 18px;
+    height: 18px;
+    border-width: 1.5px;
+    box-shadow: 1px 1.5px 0 var(--rust-deep);
+    transform: rotate(1.2deg);
+  }
+
+  .ta-trip {
+    gap: 3px;
+    max-width: 128px;
+    padding: 2px 7px 3px 8px;
+    border-width: 1.5px;
+    border-radius: 16px 14px 17px 13px / 13px 16px 14px 16px;
+    box-shadow: 1.5px 2px 0 var(--ink);
+    font-size: 14px;
+    transform: rotate(-1.2deg);
+  }
+
+  .ta-trip > .ta-tape {
+    display: none;
+  }
+
+  #ta-trip-name {
+    max-width: 92px;
+  }
+
+  .ta-trip .ta-link {
+    padding: 0;
+    font-size: 13px;
+  }
+
+  .ta-trip .ta-link svg {
+    width: 9px;
+    height: 9px;
+  }
+
+  .ta-section {
+    padding: 10px 12px;
+  }
+
+  .ta-section + .ta-section::before {
+    left: 8%;
+    right: 8%;
+    height: 4px;
+    opacity: 0.25;
+  }
+
+  .ta-section-head {
+    align-items: center;
+    margin-bottom: 7px;
+  }
+
+  .ta-section-head h2 {
+    font-size: 13px;
+    padding-bottom: 1px;
+  }
+
+  .ta-section-head h2::after {
+    height: 5px;
+    bottom: -3px;
+    opacity: 0.35;
+  }
+
+  #ta-saved-count {
+    font-size: 20px;
+    margin: -6px 1px -5px 2px;
+    top: 2px;
+    transform: rotate(-4deg);
+  }
+
+  .ta-list {
+    gap: 6px;
+    max-height: 236px;
+    padding: 1px 2px 2px 1px;
+  }
+
+  .ta-empty {
+    align-items: flex-start;
+    gap: 2px;
+    padding: 8px 10px;
+    text-align: left;
+    background-color: rgba(246, 232, 196, 0.42);
+    background-image: none;
+    border: 1.5px solid rgba(26, 20, 13, 0.42);
+    border-radius: 8px 10px 7px 9px;
+    transform: none;
+  }
+
+  .ta-empty-glyph {
+    display: none;
+  }
+
+  .ta-empty-headline {
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  .ta-empty-sub {
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    line-height: 1.25;
+    max-width: none;
+    color: rgba(107, 81, 53, 0.86);
+  }
+
+  .ta-row {
+    gap: 7px;
+    margin-top: 7px;
+  }
+
+  #ta-candidate-actions::before {
+    display: none;
+  }
+
+  #ta-candidate-actions .ta-primary {
+    min-height: 0;
+    padding: 5px 10px;
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+
+  #ta-candidate-actions .ta-primary:disabled {
+    background: rgba(246, 232, 196, 0.7);
+    color: rgba(26, 20, 13, 0.58);
+    border-color: rgba(26, 20, 13, 0.45);
+    box-shadow: none;
+  }
+
+  .ta-item {
+    gap: 8px;
+    padding: 7px 9px;
+    border-width: 1.5px;
+    border-radius: 7px 9px 6px 8px;
+    background: rgba(246, 232, 196, 0.86);
+  }
+
+  .ta-item:nth-child(3n+1),
+  .ta-item:nth-child(3n+2),
+  .ta-item:nth-child(3n+3) {
+    transform: rotate(-0.35deg);
+    box-shadow: 1.5px 2px 0 rgba(26, 20, 13, 0.42);
+  }
+
+  .ta-item:nth-child(3n+2) {
+    transform: rotate(0.25deg);
+  }
+
+  .ta-item:nth-child(3n+3) {
+    transform: rotate(-0.15deg);
+  }
+
+  .ta-item:hover {
+    transform: translateY(-1px) rotate(0deg);
+    box-shadow: 2px 3px 0 rgba(138, 48, 24, 0.55);
+  }
+
+  .ta-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    border-width: 1.7px;
+    margin-top: 2px;
+  }
+
+  .ta-item-body {
+    gap: 1px;
+  }
+
+  .ta-item-name {
+    font-size: 13px;
+    line-height: 1.25;
+  }
+
+  .ta-item-meta {
+    font-size: 11px;
+    line-height: 1.25;
+    color: rgba(107, 81, 53, 0.76);
+  }
+
+  .ta-item-tags {
+    gap: 4px;
+    margin-top: 3px;
+  }
+
+  .ta-tag {
+    padding: 0 6px;
+    border-width: 1px;
+    border-radius: 10px 8px 11px 7px;
+    font-family: "Inter", sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.45;
+    letter-spacing: 0.01em;
+    text-transform: none;
+    color: rgba(26, 20, 13, 0.76);
+    background: rgba(246, 232, 196, 0.72);
+    box-shadow: none;
+    transform: none;
+  }
+
+  .ta-tag:nth-child(odd),
+  .ta-tag:nth-child(even) {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .ta-tag::before,
+  .ta-tag.ta-tag-coord::before {
+    display: none;
+  }
+
+  .ta-tag.ta-tag-plain {
+    padding: 0 5px 0 0;
+    border-color: transparent;
+    background: transparent;
+    color: rgba(26, 20, 13, 0.76);
+    box-shadow: none;
+  }
+
+  .ta-tag.ta-tag-plain + .ta-tag::before {
+    content: "·";
+    display: inline;
+    width: auto;
+    height: auto;
+    margin: 0 5px 0 0;
+    background: none;
+    color: rgba(26, 20, 13, 0.5);
+  }
+
+  .ta-tag.ta-tag-coord {
+    color: #36552b;
+    background: rgba(74, 110, 58, 0.13);
+    border-color: rgba(74, 110, 58, 0.35);
+  }
+
+  .ta-tag.ta-tag-nocoord {
+    color: #79551b;
+    background: rgba(232, 184, 90, 0.22);
+    border-color: rgba(184, 128, 42, 0.38);
+  }
+
+  .ta-tag.ta-tag-bad {
+    color: #8a3018;
+    background: rgba(198, 74, 40, 0.12);
+    border-color: rgba(198, 74, 40, 0.32);
+  }
+
+  .ta-item-actions {
+    gap: 1px;
+    opacity: 0.62;
+  }
+
+  .ta-icon-btn,
+  .ta-source-link {
+    padding: 1px 4px;
+    font-size: 12px;
+  }
+
+  .ta-primary,
+  .ta-secondary {
+    padding: 7px 12px;
+    border-width: 1.8px;
+    box-shadow: 2px 3px 0 rgba(26, 20, 13, 0.72);
+  }
+
+  .ta-primary:hover:not(:disabled),
+  .ta-secondary:hover:not(:disabled) {
+    box-shadow: 3px 4px 0 rgba(138, 48, 24, 0.62);
+    transform: rotate(0deg) translateY(-1px);
+  }
+
+  .ta-primary-lg {
+    min-height: 42px;
+    padding: 9px 14px;
+    font-size: 14px;
+  }
+
+  .ta-link:hover {
+    text-decoration: underline var(--rust);
+    transform: translateY(-1px);
+  }
+}
+
+/* ============================================================
+   SUNNY GLASS POPUP THEME
+   Scoped to the extension popup only; shared options-page styles stay intact.
+   ============================================================ */
+.ta-popup {
+  --glass-text: #171714;
+  --glass-muted: rgba(23, 23, 20, 0.62);
+  --glass-muted-strong: rgba(23, 23, 20, 0.74);
+  --glass-yellow: #fff36d;
+  --glass-yellow-soft: rgba(255, 243, 109, 0.42);
+  --glass-card: rgba(255, 255, 255, 0.34);
+  --glass-card-strong: rgba(255, 255, 255, 0.48);
+  --glass-border: rgba(255, 255, 255, 0.36);
+  width: 360px;
+  min-height: 560px;
+  max-height: 600px;
+  padding: 10px;
+  overflow: hidden;
+  color: var(--glass-text);
+  background:
+    radial-gradient(circle at 72% 8%, rgba(123, 196, 231, 0.34), transparent 36%),
+    radial-gradient(circle at 14% 86%, rgba(255, 216, 156, 0.32), transparent 34%),
+    linear-gradient(145deg, #e8d2ad 0%, #f2dfbd 42%, #ddc49a 100%);
+  background-size: 120% 120%;
+}
+
+.ta-popup::before {
+  content: "";
+  position: fixed;
+  inset: -22px;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 70% 12%, rgba(164, 218, 244, 0.42), transparent 30%),
+    radial-gradient(circle at 22% 80%, rgba(255, 255, 255, 0.18), transparent 24%);
+  filter: blur(20px);
+}
+
+.ta-popup::after {
+  opacity: 0.075;
+  mix-blend-mode: soft-light;
+  background-image: url("../../icons/textures/paper-kraft.svg");
+  background-size: 180px 180px;
+  background-position: 19px 31px;
+}
+
+.ta-popup .ta-glass-panel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  max-height: 580px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 28px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(22px) saturate(135%);
+  -webkit-backdrop-filter: blur(22px) saturate(135%);
+}
+
+.ta-popup .ta-glass-panel::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  width: 52px;
+  height: 52px;
+  pointer-events: none;
+  background:
+    radial-gradient(circle, rgba(255, 243, 109, 0.78) 0 18%, transparent 20%),
+    radial-gradient(circle at 78% 24%, rgba(255, 255, 255, 0.75) 0 7%, transparent 8%);
+  filter: blur(0.2px);
+  opacity: 0.8;
+}
+
+.ta-popup .ta-header {
+  align-items: center;
+  padding: 12px 14px 8px;
+  background: transparent;
+  background-image: none;
+  border: 0;
+  box-shadow: none;
+}
+
+.ta-popup .ta-brand {
+  gap: 7px;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--glass-text);
+  transform: none;
+}
+
+.ta-popup .ta-brand svg.ta-anchor {
+  display: none;
+}
+
+.ta-popup .ta-brand img {
+  width: 22px;
+  height: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.46);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  transform: none;
+}
+
+.ta-popup .ta-trip {
+  gap: 4px;
+  max-width: 126px;
+  padding: 5px 9px 5px 11px;
+  color: var(--glass-text);
+  background: rgba(255, 255, 255, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  box-shadow: none;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  transform: none;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.ta-popup .ta-trip > .ta-tape {
+  display: none;
+}
+
+.ta-popup #ta-trip-name {
+  max-width: 92px;
+  color: var(--glass-text);
+}
+
+.ta-popup .ta-trip .ta-link {
+  padding: 0;
+  color: var(--glass-text);
+  font-family: inherit;
+  font-size: 12px;
+}
+
+.ta-popup .ta-trip-chev {
+  flex-shrink: 0;
+}
+
+.ta-popup .ta-trip:hover {
+  background: rgba(255, 255, 255, 0.38);
+}
+
+.ta-popup .ta-section {
+  padding: 9px 14px;
+  background: transparent;
+}
+
+.ta-popup .ta-section + .ta-section::before,
+.ta-popup .ta-section-head h2::after,
+.ta-popup .ta-export::before {
+  display: none;
+}
+
+.ta-popup .ta-section-head {
+  align-items: center;
+  margin-bottom: 7px;
+}
+
+.ta-popup .ta-section-head h2 {
+  padding: 0;
+  color: var(--glass-text);
+  font-family:
+    "Poppins",
+    "Arial Black",
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ta-popup #ta-saved-count {
+  display: inline;
+  margin: 0;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  transform: none;
+  top: auto;
+}
+
+.ta-popup .ta-list {
+  gap: 7px;
+  max-height: 230px;
+  padding: 0 1px 1px;
+  scrollbar-color: rgba(23, 23, 20, 0.28) transparent;
+}
+
+.ta-popup .ta-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ta-popup .ta-list::-webkit-scrollbar-thumb {
+  background: rgba(23, 23, 20, 0.24);
+  border: 0;
+}
+
+.ta-popup .ta-empty {
+  align-items: flex-start;
+  gap: 3px;
+  padding: 10px 12px;
+  text-align: left;
+  color: var(--glass-text);
+  background: rgba(255, 255, 255, 0.28);
+  background-image: none;
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: none;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.ta-popup .ta-empty-art {
+  position: absolute;
+  right: 12px;
+  bottom: 5px;
+  width: 112px;
+  height: 62px;
+  pointer-events: none;
+  opacity: 0.68;
+}
+
+.ta-popup .ta-empty-art-img {
+  position: absolute;
+  display: block;
+  object-fit: contain;
+}
+
+.ta-popup .ta-empty-art-beach {
+  right: 0;
+  bottom: 5px;
+  width: 68px;
+  height: 54px;
+}
+
+.ta-popup .ta-empty-art-tuoxie {
+  left: 3px;
+  bottom: 0;
+  width: 48px;
+  height: 38px;
+  transform: rotate(-12deg);
+}
+
+.ta-popup .ta-empty-glyph {
+  display: none;
+}
+
+.ta-popup .ta-empty-headline {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--glass-text);
+}
+
+.ta-popup .ta-empty-sub {
+  max-width: none;
+  color: var(--glass-muted);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 11.5px;
+  line-height: 1.32;
+}
+
+.ta-popup .ta-row {
+  gap: 7px;
+  margin-top: 8px;
+}
+
+.ta-popup #ta-candidate-actions::before {
+  display: none;
+}
+
+.ta-popup .ta-item {
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--glass-card);
+  border: 1px solid var(--glass-border);
+  border-radius: 19px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.1);
+  transform: none;
+  backdrop-filter: blur(14px) saturate(125%);
+  -webkit-backdrop-filter: blur(14px) saturate(125%);
+}
+
+.ta-popup .ta-saved-anchor {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  align-self: flex-start;
+  margin-top: 2px;
+  padding: 4px;
+  object-fit: contain;
+  background: rgba(255, 243, 109, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+.ta-popup .ta-item:nth-child(3n+1),
+.ta-popup .ta-item:nth-child(3n+2),
+.ta-popup .ta-item:nth-child(3n+3) {
+  transform: none;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.1);
+}
+
+.ta-popup .ta-item:hover,
+.ta-popup .ta-item.ta-candidate:hover {
+  background: var(--glass-card-strong);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+}
+
+.ta-popup .ta-item:active {
+  transform: translateY(0);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.ta-popup .ta-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(23, 23, 20, 0.28);
+  border-radius: 6px;
+  box-shadow: none;
+  transform: none;
+}
+
+.ta-popup .ta-item input[type="checkbox"]:checked {
+  background: var(--glass-yellow);
   border-color: transparent;
+}
+
+.ta-popup .ta-item input[type="checkbox"]:checked::after {
+  inset: -2px;
+  filter: saturate(0) brightness(0.25);
+  transform: none;
+}
+
+.ta-popup .ta-item-body {
+  gap: 1px;
+}
+
+.ta-popup .ta-item-name {
+  color: var(--glass-text);
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.ta-popup .ta-saved-item-name {
+  display: inline-block;
+  align-self: flex-start;
+  max-width: 100%;
+  padding: 3px 8px 4px;
+  font-size: 15px;
+  line-height: 1.15;
+  border: 1px solid rgba(23, 23, 20, 0.22);
+  border-radius: 11px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.14)),
+    rgba(255, 243, 109, 0.14);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.26);
+}
+
+.ta-popup .ta-item-meta {
+  color: var(--glass-muted);
+  font-size: 11px;
+  line-height: 1.28;
+}
+
+.ta-popup .ta-item-tags {
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.ta-popup .ta-tag {
+  padding: 2px 7px;
+  color: var(--glass-muted-strong);
+  background: rgba(255, 255, 255, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 999px;
+  box-shadow: none;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-transform: none;
+  transform: none;
+}
+
+.ta-popup .ta-tag:nth-child(odd),
+.ta-popup .ta-tag:nth-child(even) {
+  transform: none;
+  box-shadow: none;
+}
+
+.ta-popup .ta-tag::before,
+.ta-popup .ta-tag.ta-tag-coord::before {
+  display: none;
+}
+
+.ta-popup .ta-tag.ta-tag-plain {
+  padding-left: 0;
+  padding-right: 2px;
+  color: var(--glass-muted-strong);
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.ta-popup .ta-tag.ta-tag-plain + .ta-tag::before {
+  content: "·";
+  display: inline;
+  width: auto;
+  height: auto;
+  margin: 0 6px 0 0;
+  color: rgba(23, 23, 20, 0.5);
+  background: none;
+}
+
+.ta-popup .ta-tag.ta-tag-coord {
+  color: #1f5f34;
+  background: rgba(255, 243, 109, 0.32);
+  border-color: rgba(255, 255, 255, 0.36);
+}
+
+.ta-popup .ta-tag.ta-tag-nocoord {
+  color: #806111;
+  background: rgba(255, 243, 109, 0.28);
+  border-color: rgba(255, 255, 255, 0.32);
+}
+
+.ta-popup .ta-tag.ta-tag-bad {
+  color: #8f3d22;
+  background: rgba(255, 255, 255, 0.28);
+  border-color: rgba(255, 255, 255, 0.34);
+}
+
+.ta-popup .ta-item-actions {
+  gap: 2px;
+  opacity: 0.72;
+}
+
+.ta-popup .ta-item:hover .ta-item-actions,
+.ta-popup .ta-item:focus-within .ta-item-actions {
+  opacity: 1;
+}
+
+.ta-popup .ta-icon-btn,
+.ta-popup .ta-source-link {
+  padding: 2px 5px;
+  color: rgba(23, 23, 20, 0.72);
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.ta-popup .ta-icon-btn:hover,
+.ta-popup .ta-source-link:hover {
+  color: var(--glass-text);
+  background: rgba(255, 255, 255, 0.32);
+  transform: none;
+}
+
+.ta-popup .ta-primary,
+.ta-popup .ta-secondary {
+  min-height: 32px;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: none;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  transform: none;
+}
+
+.ta-popup .ta-primary {
+  color: var(--glass-text);
+  background: var(--glass-yellow);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+.ta-popup .ta-primary:hover:not(:disabled) {
+  background: #fff27a;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.14);
+  transform: translateY(-1px);
+}
+
+.ta-popup .ta-primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.ta-popup .ta-secondary {
+  color: var(--glass-text);
+  background: rgba(255, 255, 255, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.34);
+}
+
+.ta-popup .ta-secondary:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.36);
+  box-shadow: none;
+  transform: translateY(-1px);
+}
+
+.ta-popup .ta-primary:disabled,
+.ta-popup .ta-secondary:disabled {
+  color: rgba(23, 23, 20, 0.45);
+  background: rgba(255, 255, 255, 0.24);
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.ta-popup #ta-candidate-actions .ta-primary {
+  min-height: 30px;
+  padding: 7px 12px;
+}
+
+.ta-popup #ta-candidate-actions .ta-primary:disabled {
+  border: 1px solid rgba(255, 255, 255, 0.32);
+}
+
+.ta-popup .ta-primary-lg {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 16px;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+}
+
+.ta-popup .ta-primary-lg svg {
+  display: none;
+}
+
+.ta-popup .ta-link {
+  padding: 4px 8px;
+  color: rgba(23, 23, 20, 0.68);
+  border-radius: 999px;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 11.5px;
+  font-weight: 800;
+  text-transform: lowercase;
+}
+
+.ta-popup .ta-link:hover,
+.ta-popup .ta-link.ta-link-danger:hover {
+  color: var(--glass-text);
+  background: rgba(255, 255, 255, 0.24);
+  text-decoration: none;
+  transform: none;
+}
+
+.ta-popup .ta-link.ta-link-danger {
+  color: rgba(23, 23, 20, 0.6);
+}
+
+.ta-popup .ta-status {
+  padding: 3px 8px;
+  color: var(--glass-text);
+  background: rgba(255, 255, 255, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: 999px;
+  box-shadow: none;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 11px;
+  transform: none;
+}
+
+.ta-popup .ta-status.ta-status-ok,
+.ta-popup .ta-status.ta-status-warn {
+  color: var(--glass-text);
+  background: var(--glass-yellow-soft);
+}
+
+.ta-popup .ta-hint {
+  margin: 8px 0 0;
+  padding: 0;
+  color: var(--glass-muted);
+  border: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 11px;
+  line-height: 1.35;
+  transform: none;
+}
+
+.ta-popup .ta-export {
+  margin-top: 0;
+  padding-top: 9px;
+  background: transparent;
+  clip-path: none;
+}
+
+.ta-popup .ta-more-export {
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.ta-popup .ta-more-export > summary {
+  padding: 5px 0;
+  color: rgba(23, 23, 20, 0.68);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 11.5px;
+  font-weight: 800;
+  text-transform: none;
+}
+
+.ta-popup .ta-more-export > summary::before {
+  width: 8px;
+  height: 8px;
+  filter: saturate(0) brightness(0.25);
+  opacity: 0.7;
+}
+
+.ta-popup .ta-more-export[open] > summary {
+  color: var(--glass-text);
+}
+
+.ta-popup .ta-confirm,
+.ta-popup .ta-inline-confirm {
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.36);
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  transform: none;
+}
+
+.ta-popup .ta-confirm-msg,
+.ta-popup .ta-inline-msg {
+  color: var(--glass-text);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+@media (prefers-color-scheme: dark) {
+  .ta-popup {
+    color: var(--glass-text);
+  }
 }
